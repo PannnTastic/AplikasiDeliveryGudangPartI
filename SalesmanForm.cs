@@ -22,9 +22,13 @@ namespace DeliveryApp
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
-                    SqlDataAdapter adapter = new SqlDataAdapter("SELECT salesman_id AS 'Salesman ID', full_name AS 'Full Name', phone AS 'Phone' FROM salesman", connection);
+                    SqlCommand command = new SqlCommand("spGetAllSalesman", connection);
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    SqlDataAdapter adapter = new SqlDataAdapter(command);
                     DataTable dataTable = new DataTable();
                     adapter.Fill(dataTable);
+
                     dataGridViewSalesman.DataSource = dataTable;
                 }
             }
@@ -75,6 +79,17 @@ namespace DeliveryApp
                 MessageBox.Show("Please select a salesman to update.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+
+            var confirmResult = MessageBox.Show(
+           "Are you sure you want to update this Salesman Data?",
+           "Confirm Update",
+           MessageBoxButtons.YesNo,
+           MessageBoxIcon.Question
+       );
+                if (confirmResult == DialogResult.No)
+                {
+                    return;
+                }
 
             string salesmanId = dataGridViewSalesman.SelectedRows[0].Cells["Salesman ID"].Value.ToString();
             string fullName = textBoxSalesmanName.Text;

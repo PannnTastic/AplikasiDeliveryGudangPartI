@@ -22,9 +22,13 @@ namespace DeliveryApp
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
-                    SqlDataAdapter adapter = new SqlDataAdapter("SELECT product_id AS 'Product ID', product_name AS 'Product Name', stock_quantity AS 'Stock Quantity' FROM products", connection);
+                    SqlCommand command = new SqlCommand("spGetAllProducts", connection);
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    SqlDataAdapter adapter = new SqlDataAdapter(command);
                     DataTable dataTable = new DataTable();
                     adapter.Fill(dataTable);
+
                     dataGridViewProducts.DataSource = dataTable;
                 }
             }
@@ -51,16 +55,28 @@ namespace DeliveryApp
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
-                    SqlCommand command = new SqlCommand("INSERT INTO products (product_name, stock_quantity) VALUES (@productName, @stockQuantity)", connection);
-                    command.Parameters.AddWithValue("@productName", productName);
-                    command.Parameters.AddWithValue("@stockQuantity", stockQuantity);
-                    command.ExecuteNonQuery();
-                }
 
-                MessageBox.Show("Product added successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                LoadProductData();
-                textBoxProductName.Clear();
-                numericUpDownStockQuantity.Value = 0;
+                    SqlCommand command = new SqlCommand("spInsertProduct", connection);
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    command.Parameters.AddWithValue("@product_name", productName);
+                    command.Parameters.AddWithValue("@stock_quantity", stockQuantity);
+
+                    SqlParameter resultMessageParam = new SqlParameter("@result_message", SqlDbType.NVarChar, 255)
+                    {
+                        Direction = ParameterDirection.Output
+                    };
+                    command.Parameters.Add(resultMessageParam);
+
+                    command.ExecuteNonQuery();
+
+                    string resultMessage = command.Parameters["@result_message"].Value.ToString();
+                    MessageBox.Show(resultMessage, "Result", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    LoadProductData();
+                    textBoxProductName.Clear();
+                    numericUpDownStockQuantity.Value = 0;
+                }
             }
             catch (Exception ex)
             {
@@ -80,6 +96,18 @@ namespace DeliveryApp
             string productName = textBoxProductName.Text;
             int stockQuantity = (int)numericUpDownStockQuantity.Value;
 
+            var confirmResult = MessageBox.Show(
+                "Are you sure you want to update this Product?",
+                "Confirm Update",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question
+            );
+
+            if (confirmResult == DialogResult.No)
+            {
+                return;
+            }
+
             if (string.IsNullOrWhiteSpace(productName))
             {
                 MessageBox.Show("Please enter a product name.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -91,17 +119,29 @@ namespace DeliveryApp
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
-                    SqlCommand command = new SqlCommand("UPDATE products SET product_name = @productName, stock_quantity = @stockQuantity WHERE product_id = @productId", connection);
-                    command.Parameters.AddWithValue("@productId", productId);
-                    command.Parameters.AddWithValue("@productName", productName);
-                    command.Parameters.AddWithValue("@stockQuantity", stockQuantity);
-                    command.ExecuteNonQuery();
-                }
 
-                MessageBox.Show("Product updated successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                LoadProductData();
-                textBoxProductName.Clear();
-                numericUpDownStockQuantity.Value = 0;
+                    SqlCommand command = new SqlCommand("spUpdateProduct", connection);
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    command.Parameters.AddWithValue("@product_id", productId);
+                    command.Parameters.AddWithValue("@product_name", productName);
+                    command.Parameters.AddWithValue("@stock_quantity", stockQuantity);
+
+                    SqlParameter resultMessageParam = new SqlParameter("@result_message", SqlDbType.NVarChar, 255)
+                    {
+                        Direction = ParameterDirection.Output
+                    };
+                    command.Parameters.Add(resultMessageParam);
+
+                    command.ExecuteNonQuery();
+
+                    string resultMessage = command.Parameters["@result_message"].Value.ToString();
+                    MessageBox.Show(resultMessage, "Result", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    LoadProductData();
+                    textBoxProductName.Clear();
+                    numericUpDownStockQuantity.Value = 0;
+                }
             }
             catch (Exception ex)
             {
@@ -118,18 +158,42 @@ namespace DeliveryApp
 
             string productId = dataGridViewProducts.SelectedRows[0].Cells["Product ID"].Value.ToString();
 
+            var confirmResult = MessageBox.Show(
+                "Are you sure you want to delete this Product?",
+                "Confirm Delete",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question
+            );
+
+            if (confirmResult == DialogResult.No)
+            {
+                return;
+            }
+
             try
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
-                    SqlCommand command = new SqlCommand("DELETE FROM products WHERE product_id = @productId", connection);
-                    command.Parameters.AddWithValue("@productId", productId);
-                    command.ExecuteNonQuery();
-                }
 
-                MessageBox.Show("Product deleted successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                LoadProductData();
+                    SqlCommand command = new SqlCommand("spDeleteProduct", connection);
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    command.Parameters.AddWithValue("@product_id", productId);
+
+                    SqlParameter resultMessageParam = new SqlParameter("@result_message", SqlDbType.NVarChar, 255)
+                    {
+                        Direction = ParameterDirection.Output
+                    };
+                    command.Parameters.Add(resultMessageParam);
+
+                    command.ExecuteNonQuery();
+
+                    string resultMessage = command.Parameters["@result_message"].Value.ToString();
+                    MessageBox.Show(resultMessage, "Result", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    LoadProductData();
+                }
             }
             catch (Exception ex)
             {

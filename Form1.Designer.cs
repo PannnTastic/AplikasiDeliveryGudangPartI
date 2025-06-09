@@ -1,6 +1,6 @@
 ﻿namespace DeliveryApp
 {
-    partial class Form1
+    partial class Delivery
     {
         /// <summary>
         /// Required designer variable.
@@ -44,6 +44,7 @@
             this.buttonRefresh = new System.Windows.Forms.Button();
             this.buttonOpenSalesmanForm = new System.Windows.Forms.Button();
             this.buttonOpenProductForm = new System.Windows.Forms.Button();
+            this.buttonExportReport = new System.Windows.Forms.Button();
             this.groupBoxInput.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownQuantity)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewDelivery)).BeginInit();
@@ -80,8 +81,11 @@
             // 
             // dateTimePickerDeliveryDate
             // 
+            this.dateTimePickerDeliveryDate.CustomFormat = "dd-MM-yyyy HH:mm";
+            this.dateTimePickerDeliveryDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.dateTimePickerDeliveryDate.Location = new System.Drawing.Point(159, 42);
             this.dateTimePickerDeliveryDate.Name = "dateTimePickerDeliveryDate";
+            this.dateTimePickerDeliveryDate.ShowUpDown = true;
             this.dateTimePickerDeliveryDate.Size = new System.Drawing.Size(200, 22);
             this.dateTimePickerDeliveryDate.TabIndex = 3;
             // 
@@ -193,6 +197,7 @@
             this.dataGridViewDelivery.RowTemplate.Height = 24;
             this.dataGridViewDelivery.Size = new System.Drawing.Size(760, 200);
             this.dataGridViewDelivery.TabIndex = 13;
+            this.dataGridViewDelivery.SelectionChanged += new System.EventHandler(this.DataGridViewDelivery_SelectionChanged);
             // 
             // buttonRefresh
             // 
@@ -224,24 +229,35 @@
             this.buttonOpenProductForm.Text = "Manage Products";
             this.buttonOpenProductForm.Click += new System.EventHandler(this.ButtonOpenProductForm_Click);
             // 
-            // Form1
+            // buttonExportReport
+            // 
+            this.buttonExportReport.BackColor = System.Drawing.Color.Lime;
+            this.buttonExportReport.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonExportReport.Location = new System.Drawing.Point(705, 550);
+            this.buttonExportReport.Name = "buttonExportReport";
+            this.buttonExportReport.Size = new System.Drawing.Size(75, 30);
+            this.buttonExportReport.TabIndex = 16;
+            this.buttonExportReport.Text = "Export";
+            this.buttonExportReport.UseVisualStyleBackColor = false;
+            buttonExportReport.Click += ButtonExportReport_Click;
+            // 
+            // Delivery
             // 
             this.BackColor = System.Drawing.Color.LightSteelBlue;
             this.ClientSize = new System.Drawing.Size(800, 600);
+            this.Controls.Add(this.buttonExportReport);
             this.Controls.Add(this.buttonRefresh);
             this.Controls.Add(this.buttonOpenSalesmanForm);
             this.Controls.Add(this.buttonOpenProductForm);
             this.Controls.Add(this.groupBoxInput);
             this.Controls.Add(this.dataGridViewDelivery);
-            this.Name = "Form1";
+            this.Name = "Delivery";
             this.Text = "Delivery Management";
             this.groupBoxInput.ResumeLayout(false);
             this.groupBoxInput.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownQuantity)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewDelivery)).EndInit();
             this.ResumeLayout(false);
-            this.dataGridViewDelivery.SelectionChanged += new System.EventHandler(this.DataGridViewDelivery_SelectionChanged);
-
 
         }
 
@@ -262,5 +278,6 @@
         private System.Windows.Forms.Label labelSalesmanId;
         private System.Windows.Forms.Label labelProductId;
         private System.Windows.Forms.Label labelQuantity;
+        private System.Windows.Forms.Button buttonExportReport;
     }
 }

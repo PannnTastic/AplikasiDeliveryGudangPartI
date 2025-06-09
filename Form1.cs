@@ -1,20 +1,23 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace DeliveryApp
 {
-    public partial class Form1 : Form
+    public partial class Delivery : Form
     {
         private readonly string connectionString = @"Server=LAPTOP-EKC9LDBK\PANNNTASTIC;Database=pabd;Trusted_Connection=True;";
 
-        public Form1()
+        public Delivery()
         {
             InitializeComponent();
             LoadSalesmanData();
             LoadProductData();
             LoadDeliveryData();
+            dateTimePickerDeliveryDate.ValueChanged += DateTimePickerDeliveryDate_ValueChanged;
         }
 
         private void LoadSalesmanData()
@@ -66,9 +69,13 @@ namespace DeliveryApp
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
-                    SqlDataAdapter adapter = new SqlDataAdapter("SELECT * FROM delivery", connection);
+                    SqlCommand command = new SqlCommand("spGetAllDeliveries", connection);
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    SqlDataAdapter adapter = new SqlDataAdapter(command);
                     DataTable dataTable = new DataTable();
                     adapter.Fill(dataTable);
+
                     dataGridViewDelivery.DataSource = dataTable;
                 }
             }
@@ -85,23 +92,45 @@ namespace DeliveryApp
             string productId = comboBoxProductId.SelectedItem?.ToString()?.Split('-')[0].Trim();
             int quantity = (int)numericUpDownQuantity.Value;
 
+            if (deliveryDate < DateTime.Now)
+            {
+                TimeSpan timeElapsed = DateTime.Now - deliveryDate;
+                MessageBox.Show($"Tanggal telah berlalu: {timeElapsed.Days} hari lalu.",
+                                "Invalid Date",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning);
+                return;
+            }
 
             try
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
-                    SqlCommand command = new SqlCommand("INSERT INTO delivery ( delivery_date, salesman_id, product_id, quantity) VALUES ( @deliveryDate, @salesmanId, @productId, @quantity)", connection);
-                    
-                    command.Parameters.AddWithValue("@deliveryDate", deliveryDate);
-                    command.Parameters.AddWithValue("@salesmanId", salesmanId);
-                    command.Parameters.AddWithValue("@productId", productId);
-                    command.Parameters.AddWithValue("@quantity", quantity);
-                    command.ExecuteNonQuery();
-                }
 
-                MessageBox.Show("Delivery record added successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                LoadDeliveryData();
+                    SqlCommand command = new SqlCommand("spInsertDelivery", connection);
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    // Parameter input
+                    command.Parameters.AddWithValue("@delivery_date", deliveryDate);
+                    command.Parameters.AddWithValue("@salesman_id", string.IsNullOrEmpty(salesmanId) ? (object)DBNull.Value : salesmanId);
+                    command.Parameters.AddWithValue("@product_id", productId);
+                    command.Parameters.AddWithValue("@quantity", quantity);
+
+                    // Output parameter
+                    SqlParameter resultMessageParam = new SqlParameter("@result_message", SqlDbType.NVarChar, 255)
+                    {
+                        Direction = ParameterDirection.Output
+                    };
+                    command.Parameters.Add(resultMessageParam);
+
+                    command.ExecuteNonQuery();
+
+                    string resultMessage = command.Parameters["@result_message"].Value.ToString();
+                    MessageBox.Show(resultMessage, "Result", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    LoadDeliveryData(); // Refresh grid
+                }
             }
             catch (Exception ex)
             {
@@ -109,32 +138,60 @@ namespace DeliveryApp
             }
         }
 
+
         private void ButtonUpdate_Click(object sender, EventArgs e)
         {
-            
+            if (dataGridViewDelivery.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Please select a delivery record to update.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            string deliveryId = dataGridViewDelivery.SelectedRows[0].Cells["delivery_id"].Value.ToString();
             DateTime deliveryDate = dateTimePickerDeliveryDate.Value;
             string salesmanId = comboBoxSalesmanId.SelectedItem?.ToString()?.Split('-')[0].Trim();
             string productId = comboBoxProductId.SelectedItem?.ToString()?.Split('-')[0].Trim();
             int quantity = (int)numericUpDownQuantity.Value;
 
-            
+            var confirmResult = MessageBox.Show(
+                "Are you sure you want to update this delivery record?",
+                "Confirm Update",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question
+            );
+            if (confirmResult == DialogResult.No)
+            {
+                return;
+            }
 
             try
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
-                    SqlCommand command = new SqlCommand("UPDATE delivery SET delivery_date = @deliveryDate, salesman_id = @salesmanId, product_id = @productId, quantity = @quantity WHERE delivery_id = @deliveryId", connection);
-                    
-                    command.Parameters.AddWithValue("@deliveryDate", deliveryDate);
-                    command.Parameters.AddWithValue("@salesmanId", salesmanId);
-                    command.Parameters.AddWithValue("@productId", productId);
-                    command.Parameters.AddWithValue("@quantity", quantity);
-                    command.ExecuteNonQuery();
-                }
 
-                MessageBox.Show("Delivery record updated successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                LoadDeliveryData();
+                    SqlCommand command = new SqlCommand("spUpdateDelivery", connection);
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    command.Parameters.AddWithValue("@delivery_id", deliveryId);
+                    command.Parameters.AddWithValue("@delivery_date", deliveryDate);
+                    command.Parameters.AddWithValue("@salesman_id", string.IsNullOrEmpty(salesmanId) ? (object)DBNull.Value : salesmanId);
+                    command.Parameters.AddWithValue("@product_id", productId);
+                    command.Parameters.AddWithValue("@quantity", quantity);
+
+                    SqlParameter resultMessageParam = new SqlParameter("@result_message", SqlDbType.NVarChar, 255)
+                    {
+                        Direction = ParameterDirection.Output
+                    };
+                    command.Parameters.Add(resultMessageParam);
+
+                    command.ExecuteNonQuery();
+
+                    string resultMessage = command.Parameters["@result_message"].Value.ToString();
+                    MessageBox.Show(resultMessage, "Result", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    LoadDeliveryData();
+                }
             }
             catch (Exception ex)
             {
@@ -142,28 +199,60 @@ namespace DeliveryApp
             }
         }
 
+
+
         private void ButtonDelete_Click(object sender, EventArgs e)
         {
-           
+            if (dataGridViewDelivery.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Please select a delivery record to delete.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            string deliveryId = dataGridViewDelivery.SelectedRows[0].Cells["delivery_id"].Value.ToString();
+
+            var confirmResult = MessageBox.Show(
+                "Are you sure you want to delete this delivery record?",
+                "Confirm Delete",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question
+            );
+            if (confirmResult == DialogResult.No)
+            {
+                return;
+            }
 
             try
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
-                    SqlCommand command = new SqlCommand("DELETE FROM delivery WHERE delivery_id = @deliveryId", connection);
-                    
-                    command.ExecuteNonQuery();
-                }
 
-                MessageBox.Show("Delivery record deleted successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                LoadDeliveryData();
+                    SqlCommand command = new SqlCommand("spDeleteDelivery", connection);
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    command.Parameters.AddWithValue("@delivery_id", deliveryId);
+
+                    SqlParameter resultMessageParam = new SqlParameter("@result_message", SqlDbType.NVarChar, 255)
+                    {
+                        Direction = ParameterDirection.Output
+                    };
+                    command.Parameters.Add(resultMessageParam);
+
+                    command.ExecuteNonQuery();
+
+                    string resultMessage = command.Parameters["@result_message"].Value.ToString();
+                    MessageBox.Show(resultMessage, "Result", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    LoadDeliveryData();
+                }
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Error deleting delivery record: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
         private void ButtonRefresh_Click(object sender, EventArgs e)
         {
             try
@@ -230,6 +319,62 @@ namespace DeliveryApp
                 return command.ExecuteScalar()?.ToString() ?? string.Empty;
             }
         }
+
+        private void DateTimePickerDeliveryDate_ValueChanged(object sender, EventArgs e)
+        {
+            // Pastikan tanggal dan waktu yang dipilih adalah saat ini atau di masa depan
+            if (dateTimePickerDeliveryDate.Value < DateTime.Now)
+            {
+                MessageBox.Show("Tanggal dan waktu telah berlalu. Harap pilih tanggal dan waktu yang valid.",
+                                "Invalid Date and Time",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning);
+                dateTimePickerDeliveryDate.Value = DateTime.Now; // Reset ke tanggal dan waktu saat ini
+            }
+        }
+
+        private void ButtonExportReport_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    SqlDataAdapter adapter = new SqlDataAdapter("SELECT * FROM delivery", connection);
+                    DataTable dataTable = new DataTable();
+                    adapter.Fill(dataTable);
+
+                    using (SaveFileDialog saveFileDialog = new SaveFileDialog())
+                    {
+                        saveFileDialog.Filter = "CSV files (*.csv)|*.csv";
+                        saveFileDialog.Title = "Save Delivery Report";
+                        saveFileDialog.FileName = "LaporanPengiriman.csv";
+                        if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                        {
+                            string filePath = saveFileDialog.FileName;
+                            using (StreamWriter sw = new StreamWriter(filePath))
+                            {
+                                // Header
+                                sw.WriteLine(string.Join(",", dataTable.Columns.Cast<DataColumn>().Select(c => c.ColumnName)));
+
+                                // Data rows
+                                foreach (DataRow row in dataTable.Rows)
+                                {
+                                    sw.WriteLine(string.Join(",", row.ItemArray.Select(field => field.ToString().Replace(",", ";"))));
+                                }
+                            }
+
+                            MessageBox.Show($"Laporan berhasil diekspor ke:\n{filePath}", "Export Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error exporting report: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
 
     }
 }
