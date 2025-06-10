@@ -47,6 +47,9 @@
             this.buttonExportReport = new System.Windows.Forms.Button();
             this.buttonAnalyzeQuery = new System.Windows.Forms.Button();
             this.buttonExportPdf = new System.Windows.Forms.Button();
+            this.buttonOpenReportDelivery = new System.Windows.Forms.Button();
+            this.buttonOpenReportProducts = new System.Windows.Forms.Button();
+            this.buttonOpenReportSalesman = new System.Windows.Forms.Button();
             this.groupBoxInput.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownQuantity)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewDelivery)).BeginInit();
@@ -267,10 +270,40 @@
             this.buttonExportPdf.UseVisualStyleBackColor = false;
             this.buttonExportPdf.Click += new System.EventHandler(this.buttonExportPdf_Click);
             // 
+            // buttonOpenReportDelivery
+            // 
+            this.buttonOpenReportDelivery.Location = new System.Drawing.Point(618, 48);
+            this.buttonOpenReportDelivery.Name = "buttonOpenReportDelivery";
+            this.buttonOpenReportDelivery.Size = new System.Drawing.Size(150, 30);
+            this.buttonOpenReportDelivery.TabIndex = 19;
+            this.buttonOpenReportDelivery.Text = "Report Delivery";
+            this.buttonOpenReportDelivery.Click += new System.EventHandler(this.ButtonOpenReportDelivery_Click);
+            // 
+            // buttonOpenReportProducts
+            // 
+            this.buttonOpenReportProducts.Location = new System.Drawing.Point(618, 84);
+            this.buttonOpenReportProducts.Name = "buttonOpenReportProducts";
+            this.buttonOpenReportProducts.Size = new System.Drawing.Size(150, 30);
+            this.buttonOpenReportProducts.TabIndex = 20;
+            this.buttonOpenReportProducts.Text = "Report Products";
+            this.buttonOpenReportProducts.Click += new System.EventHandler(this.ButtonOpenReportProducts_Click);
+            // 
+            // buttonOpenReportSalesman
+            // 
+            this.buttonOpenReportSalesman.Location = new System.Drawing.Point(618, 120);
+            this.buttonOpenReportSalesman.Name = "buttonOpenReportSalesman";
+            this.buttonOpenReportSalesman.Size = new System.Drawing.Size(150, 30);
+            this.buttonOpenReportSalesman.TabIndex = 21;
+            this.buttonOpenReportSalesman.Text = "Report Salesman";
+            this.buttonOpenReportSalesman.Click += new System.EventHandler(this.ButtonOpenReportSalesman_Click);
+            // 
             // Delivery
             // 
             this.BackColor = System.Drawing.Color.LightSteelBlue;
             this.ClientSize = new System.Drawing.Size(800, 600);
+            this.Controls.Add(this.buttonOpenReportSalesman);
+            this.Controls.Add(this.buttonOpenReportProducts);
+            this.Controls.Add(this.buttonOpenReportDelivery);
             this.Controls.Add(this.buttonExportPdf);
             this.Controls.Add(this.buttonAnalyzeQuery);
             this.Controls.Add(this.buttonExportReport);
@@ -309,5 +342,8 @@
         private System.Windows.Forms.Button buttonExportReport;
         private System.Windows.Forms.Button buttonAnalyzeQuery;
         private System.Windows.Forms.Button buttonExportPdf;
+        private System.Windows.Forms.Button buttonOpenReportDelivery;
+        private System.Windows.Forms.Button buttonOpenReportProducts;
+        private System.Windows.Forms.Button buttonOpenReportSalesman;
     }
 }

@@ -331,6 +331,23 @@ namespace DeliveryApp
             ProductForm productForm = new ProductForm();
             productForm.Show();
         }
+
+        private void ButtonOpenReportDelivery_Click(object sender, EventArgs e)
+        {
+            FormReportDelivery delivery = new FormReportDelivery();
+            delivery.Show();
+        }
+
+        private void ButtonOpenReportProducts_Click(object sender, EventArgs e)
+        {
+            FormReportProducts products = new FormReportProducts();
+            products.Show();
+        }
+        private void ButtonOpenReportSalesman_Click(object sender, EventArgs e)
+        {
+            FormReportSalesman salesman = new FormReportSalesman();
+            salesman.Show();
+        }
         private void DataGridViewDelivery_SelectionChanged(object sender, EventArgs e)
         {
             if (dataGridViewDelivery.SelectedRows.Count > 0)

@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="ReportDeliveryDataSet" targetNamespace="http://tempuri.org/ReportDeliveryDataSet.xsd" xmlns:mstns="http://tempuri.org/ReportDeliveryDataSet.xsd" xmlns="http://tempuri.org/ReportDeliveryDataSet.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections>
+          <Connection AppSettingsObjectName="Settings" AppSettingsPropertyName="pabdConnectionString" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="pabdConnectionString (Settings)" ParameterPrefix="@" PropertyReference="ApplicationSettings.ucp1.Properties.Settings.GlobalReference.Default.pabdConnectionString" Provider="Microsoft.Data.SqlClient" />
+        </Connections>
+        <Tables>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="DataTable1TableAdapter" GeneratorDataComponentClassName="DataTable1TableAdapter" Name="DataTable1" UserDataComponentName="DataTable1TableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="pabdConnectionString (Settings)" DbObjectType="Unknown" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="true" UserGetMethodName="GetData" UserSourceName="Fill">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="true">
+                    <CommandText>SELECT d.delivery_id AS DeliveryID, d.delivery_date AS DeliveryDate, s.full_name AS SalesmanName, p.product_name AS ProductName, d.quantity AS Quantity, CASE WHEN d .delivery_date &lt; CAST(GETDATE() AS DATE) 
+                  THEN 'Telah Berlalu' WHEN CAST(d .delivery_date AS DATE) = CAST(GETDATE() AS DATE) THEN 'Hari Ini' WHEN CAST(d .delivery_date AS DATE) = CAST(DATEADD(DAY, 1, GETDATE()) AS DATE) THEN 'Besok' WHEN DATEDIFF(DAY, 
+                  GETDATE(), d .delivery_date) &lt;= 7 THEN 'Dalam ' + CAST(DATEDIFF(DAY, GETDATE(), d .delivery_date) AS VARCHAR(5)) + ' Hari' ELSE 'Lebih dari 7 Hari' END AS KeteranganWaktu, DATEDIFF(HOUR, GETDATE(), d.delivery_date) 
+                  AS SisaJam, DATEDIFF(MINUTE, GETDATE(), d.delivery_date) AS SisaMenit
+FROM     delivery AS d INNER JOIN
+                  salesman AS s ON d.salesman_id = s.salesman_id INNER JOIN
+                  products AS p ON d.product_id = p.product_id
+ORDER BY DeliveryDate DESC</CommandText>
+                    <Parameters />
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="DeliveryID" DataSetColumn="DeliveryID" />
+              <Mapping SourceColumn="DeliveryDate" DataSetColumn="DeliveryDate" />
+              <Mapping SourceColumn="SalesmanName" DataSetColumn="SalesmanName" />
+              <Mapping SourceColumn="ProductName" DataSetColumn="ProductName" />
+              <Mapping SourceColumn="Quantity" DataSetColumn="Quantity" />
+              <Mapping SourceColumn="KeteranganWaktu" DataSetColumn="KeteranganWaktu" />
+              <Mapping SourceColumn="SisaJam" DataSetColumn="SisaJam" />
+              <Mapping SourceColumn="SisaMenit" DataSetColumn="SisaMenit" />
+            </Mappings>
+            <Sources />
+          </TableAdapter>
+        </Tables>
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="ReportDeliveryDataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_UserDSName="ReportDeliveryDataSet" msprop:Generator_DataSetName="ReportDeliveryDataSet">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="DataTable1" msprop:Generator_RowEvHandlerName="DataTable1RowChangeEventHandler" msprop:Generator_RowDeletedName="DataTable1RowDeleted" msprop:Generator_RowDeletingName="DataTable1RowDeleting" msprop:Generator_RowEvArgName="DataTable1RowChangeEvent" msprop:Generator_TablePropName="DataTable1" msprop:Generator_RowChangedName="DataTable1RowChanged" msprop:Generator_RowChangingName="DataTable1RowChanging" msprop:Generator_TableClassName="DataTable1DataTable" msprop:Generator_RowClassName="DataTable1Row" msprop:Generator_TableVarName="tableDataTable1" msprop:Generator_UserTableName="DataTable1">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="DeliveryID" msprop:Generator_ColumnPropNameInRow="DeliveryID" msprop:Generator_ColumnPropNameInTable="DeliveryIDColumn" msprop:Generator_ColumnVarNameInTable="columnDeliveryID" msprop:Generator_UserColumnName="DeliveryID">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="6" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="DeliveryDate" msprop:Generator_ColumnPropNameInRow="DeliveryDate" msprop:Generator_ColumnPropNameInTable="DeliveryDateColumn" msprop:Generator_ColumnVarNameInTable="columnDeliveryDate" msprop:Generator_UserColumnName="DeliveryDate" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="SalesmanName" msprop:Generator_ColumnPropNameInRow="SalesmanName" msprop:Generator_ColumnPropNameInTable="SalesmanNameColumn" msprop:Generator_ColumnVarNameInTable="columnSalesmanName" msprop:Generator_UserColumnName="SalesmanName">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="ProductName" msprop:Generator_ColumnPropNameInRow="ProductName" msprop:Generator_ColumnPropNameInTable="ProductNameColumn" msprop:Generator_ColumnVarNameInTable="columnProductName" msprop:Generator_UserColumnName="ProductName">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="100" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="Quantity" msprop:Generator_ColumnPropNameInRow="Quantity" msprop:Generator_ColumnPropNameInTable="QuantityColumn" msprop:Generator_ColumnVarNameInTable="columnQuantity" msprop:Generator_UserColumnName="Quantity" type="xs:int" />
+              <xs:element name="KeteranganWaktu" msdata:ReadOnly="true" msprop:Generator_ColumnPropNameInRow="KeteranganWaktu" msprop:Generator_ColumnPropNameInTable="KeteranganWaktuColumn" msprop:Generator_ColumnVarNameInTable="columnKeteranganWaktu" msprop:Generator_UserColumnName="KeteranganWaktu" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="17" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="SisaJam" msdata:ReadOnly="true" msprop:Generator_ColumnPropNameInRow="SisaJam" msprop:Generator_ColumnPropNameInTable="SisaJamColumn" msprop:Generator_ColumnVarNameInTable="columnSisaJam" msprop:Generator_UserColumnName="SisaJam" type="xs:int" minOccurs="0" />
+              <xs:element name="SisaMenit" msdata:ReadOnly="true" msprop:Generator_ColumnPropNameInRow="SisaMenit" msprop:Generator_ColumnPropNameInTable="SisaMenitColumn" msprop:Generator_ColumnVarNameInTable="columnSisaMenit" msprop:Generator_UserColumnName="SisaMenit" type="xs:int" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+    <xs:unique name="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:DataTable1" />
+      <xs:field xpath="mstns:DeliveryID" />
+    </xs:unique>
+  </xs:element>
+</xs:schema>
