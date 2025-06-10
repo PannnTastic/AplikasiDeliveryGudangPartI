@@ -27,6 +27,7 @@ namespace DeliveryApp
         public Delivery()
         {
             InitializeComponent();
+            EnsureIndexes(); // Pastikan index sudah dibuat saat form diinisialisasi
             LoadDeliveryData();
             LoadProductData();
             LoadSalesmanData();
@@ -536,6 +537,57 @@ namespace DeliveryApp
             catch (Exception ex)
             {
                 MessageBox.Show("Error saat ekspor ke PDF: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        private void EnsureIndexes()
+        {
+            string createIndexesScript = @"
+                    IF OBJECT_ID('delivery', 'U') IS NOT NULL
+            BEGIN
+                IF NOT EXISTS (SELECT name FROM sys.indexes WHERE name = 'IX_delivery_date')
+                CREATE NONCLUSTERED INDEX IX_delivery_date ON delivery(delivery_date DESC)
+
+                IF NOT EXISTS (SELECT name FROM sys.indexes WHERE name = 'IX_delivery_salesman')
+                CREATE NONCLUSTERED INDEX IX_delivery_salesman ON delivery(salesman_id)
+
+                IF NOT EXISTS (SELECT name FROM sys.indexes WHERE name = 'IX_delivery_product')
+                CREATE NONCLUSTERED INDEX IX_delivery_product ON delivery(product_id)
+
+                IF NOT EXISTS (SELECT name FROM sys.indexes WHERE name = 'IX_delivery_report')
+                CREATE NONCLUSTERED INDEX IX_delivery_report ON delivery(delivery_date, salesman_id, product_id)
+            END
+
+            IF OBJECT_ID('products', 'U') IS NOT NULL
+            BEGIN
+                IF NOT EXISTS (SELECT name FROM sys.indexes WHERE name = 'IX_products_name')
+                CREATE NONCLUSTERED INDEX IX_products_name ON products(product_name)
+
+                IF NOT EXISTS (SELECT name FROM sys.indexes WHERE name = 'IX_products_stock')
+                CREATE NONCLUSTERED INDEX IX_products_stock ON products(stock_quantity)
+            END
+
+            IF OBJECT_ID('salesman', 'U') IS NOT NULL
+            BEGIN
+                IF NOT EXISTS (SELECT name FROM sys.indexes WHERE name = 'IX_salesman_name')
+                CREATE NONCLUSTERED INDEX IX_salesman_name ON salesman(full_name)
+
+                IF NOT EXISTS (SELECT name FROM sys.indexes WHERE name = 'IX_salesman_phone')
+                CREATE NONCLUSTERED INDEX IX_salesman_phone ON salesman(phone)
+            END";
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    SqlCommand command = new SqlCommand(createIndexesScript, conn);
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Gagal membuat index: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }
