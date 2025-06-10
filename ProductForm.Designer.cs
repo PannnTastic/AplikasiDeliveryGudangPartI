@@ -24,6 +24,8 @@
             this.labelStockQuantity = new System.Windows.Forms.Label();
             this.numericUpDownStockQuantity = new System.Windows.Forms.NumericUpDown();
             this.buttonRefresh = new System.Windows.Forms.Button();
+            this.buttonExportCSV = new System.Windows.Forms.Button();
+            this.buttonExportPdf = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewProducts)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownStockQuantity)).BeginInit();
             this.SuspendLayout();
@@ -111,9 +113,31 @@
             this.buttonRefresh.UseVisualStyleBackColor = true;
             this.buttonRefresh.Click += new System.EventHandler(this.buttonRefresh_Click);
             // 
+            // buttonExportCSV
+            // 
+            this.buttonExportCSV.Location = new System.Drawing.Point(498, 339);
+            this.buttonExportCSV.Name = "buttonExportCSV";
+            this.buttonExportCSV.Size = new System.Drawing.Size(89, 30);
+            this.buttonExportCSV.TabIndex = 10;
+            this.buttonExportCSV.Text = "Export CSV";
+            this.buttonExportCSV.UseVisualStyleBackColor = true;
+            this.buttonExportCSV.Click += new System.EventHandler(this.buttonExportCsv_Click);
+            // 
+            // buttonExportPdf
+            // 
+            this.buttonExportPdf.Location = new System.Drawing.Point(498, 303);
+            this.buttonExportPdf.Name = "buttonExportPdf";
+            this.buttonExportPdf.Size = new System.Drawing.Size(89, 30);
+            this.buttonExportPdf.TabIndex = 11;
+            this.buttonExportPdf.Text = "Export PDF";
+            this.buttonExportPdf.UseVisualStyleBackColor = true;
+            this.buttonExportPdf.Click += new System.EventHandler(this.buttonExportPdf_Click);
+            // 
             // ProductForm
             // 
             this.ClientSize = new System.Drawing.Size(599, 392);
+            this.Controls.Add(this.buttonExportPdf);
+            this.Controls.Add(this.buttonExportCSV);
             this.Controls.Add(this.buttonRefresh);
             this.Controls.Add(this.labelStockQuantity);
             this.Controls.Add(this.numericUpDownStockQuantity);
@@ -141,5 +165,7 @@
         private System.Windows.Forms.Label labelStockQuantity;
         private System.Windows.Forms.NumericUpDown numericUpDownStockQuantity;
         private System.Windows.Forms.Button buttonRefresh;
+        private System.Windows.Forms.Button buttonExportCSV;
+        private System.Windows.Forms.Button buttonExportPdf;
     }
 }

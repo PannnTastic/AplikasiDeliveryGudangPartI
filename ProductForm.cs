@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
-using System.Windows.Forms;
+using System.IO;
+using System.Linq;
 using System.Runtime.Caching;
+using System.Windows.Forms;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
 
 namespace DeliveryApp
 {
@@ -251,6 +255,116 @@ namespace DeliveryApp
             catch (Exception ex)
             {
                 MessageBox.Show($"Error refreshing product data: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void buttonExportPdf_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    SqlCommand command = new SqlCommand("spGetAllProducts", connection);
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    SqlDataAdapter adapter = new SqlDataAdapter(command);
+                    DataTable dataTable = new DataTable();
+                    adapter.Fill(dataTable);
+
+                    using (SaveFileDialog saveFileDialog = new SaveFileDialog())
+                    {
+                        saveFileDialog.Filter = "PDF Files (*.pdf)|*.pdf";
+                        saveFileDialog.FileName = "LaporanProduk.pdf";
+
+                        if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                        {
+                            Document document = new Document(PageSize.A4, 10f, 10f, 10f, 10f);
+                            PdfWriter writer = PdfWriter.GetInstance(document, new FileStream(saveFileDialog.FileName, FileMode.Create));
+                            document.Open();
+
+                            Paragraph title = new Paragraph("Laporan Daftar Produk\n\n", new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 14, iTextSharp.text.Font.BOLD));
+                            title.Alignment = Element.ALIGN_CENTER;
+                            document.Add(title);
+
+                            PdfPTable pdfTable = new PdfPTable(dataTable.Columns.Count);
+                            pdfTable.WidthPercentage = 100;
+                            pdfTable.HorizontalAlignment = Element.ALIGN_LEFT;
+
+                            // Header
+                            foreach (DataColumn column in dataTable.Columns)
+                            {
+                                PdfPCell headerCell = new PdfPCell(new Phrase(column.ColumnName));
+                                headerCell.BackgroundColor = new BaseColor(System.Drawing.Color.LightGray);
+                                pdfTable.AddCell(headerCell);
+                            }
+
+                            // Isi baris
+                            foreach (DataRow row in dataTable.Rows)
+                            {
+                                foreach (var item in row.ItemArray)
+                                {
+                                    pdfTable.AddCell(item?.ToString() ?? "");
+                                }
+                            }
+
+                            document.Add(pdfTable);
+                            document.Close();
+
+                            MessageBox.Show("Laporan berhasil diekspor ke PDF!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error exporting to PDF: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void buttonExportCsv_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    SqlCommand command = new SqlCommand("spGetAllProducts", connection);
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    SqlDataAdapter adapter = new SqlDataAdapter(command);
+                    DataTable dataTable = new DataTable();
+                    adapter.Fill(dataTable);
+
+                    using (SaveFileDialog saveFileDialog = new SaveFileDialog())
+                    {
+                        saveFileDialog.Filter = "CSV files (*.csv)|*.csv";
+                        saveFileDialog.FileName = "LaporanProduk.csv";
+
+                        if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                        {
+                            using (StreamWriter sw = new StreamWriter(saveFileDialog.FileName))
+                            {
+                                // Header
+                                sw.WriteLine(string.Join(",", dataTable.Columns.Cast<DataColumn>().Select(c => c.ColumnName)));
+
+                                // Data
+                                foreach (DataRow row in dataTable.Rows)
+                                {
+                                    sw.WriteLine(string.Join(",", row.ItemArray.Select(field => field.ToString().Replace(",", ";"))));
+                                }
+                            }
+
+                            MessageBox.Show("Laporan produk berhasil diekspor ke CSV!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error exporting to CSV: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

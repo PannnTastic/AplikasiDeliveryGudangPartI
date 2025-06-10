@@ -5,6 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using System.Runtime.Caching;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
 
 namespace DeliveryApp
 {
@@ -370,7 +372,12 @@ namespace DeliveryApp
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
-                    SqlDataAdapter adapter = new SqlDataAdapter("SELECT * FROM delivery", connection);
+
+                    // Gunakan Stored Procedure
+                    SqlCommand command = new SqlCommand("spGetAllDeliveries", connection);
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    SqlDataAdapter adapter = new SqlDataAdapter(command);
                     DataTable dataTable = new DataTable();
                     adapter.Fill(dataTable);
 
@@ -379,15 +386,17 @@ namespace DeliveryApp
                         saveFileDialog.Filter = "CSV files (*.csv)|*.csv";
                         saveFileDialog.Title = "Save Delivery Report";
                         saveFileDialog.FileName = "LaporanPengiriman.csv";
+
                         if (saveFileDialog.ShowDialog() == DialogResult.OK)
                         {
                             string filePath = saveFileDialog.FileName;
+
                             using (StreamWriter sw = new StreamWriter(filePath))
                             {
-                                // Header
+                                // Tulis header CSV berdasarkan kolom hasil SP
                                 sw.WriteLine(string.Join(",", dataTable.Columns.Cast<DataColumn>().Select(c => c.ColumnName)));
 
-                                // Data rows
+                                // Tulis baris data
                                 foreach (DataRow row in dataTable.Rows)
                                 {
                                     sw.WriteLine(string.Join(",", row.ItemArray.Select(field => field.ToString().Replace(",", ";"))));
@@ -453,7 +462,64 @@ namespace DeliveryApp
 
         }
 
+        private void buttonExportPdf_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Pilih lokasi simpan file PDF
+                SaveFileDialog saveFileDialog = new SaveFileDialog();
+                saveFileDialog.Filter = "PDF Files|*.pdf";
+                saveFileDialog.Title = "Save Data as PDF";
+                saveFileDialog.FileName = "DeliveryReport.pdf";
 
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    Document document = new Document(PageSize.A4, 10f, 10f, 10f, 10f);
 
+                    PdfWriter writer = PdfWriter.GetInstance(document, new FileStream(saveFileDialog.FileName, FileMode.Create));
+                    document.Open();
+
+                    // Judul laporan
+                    Paragraph title = new Paragraph("Laporan Pengiriman\n\n", new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 14, iTextSharp.text.Font.BOLD));
+                    title.Alignment = Element.ALIGN_CENTER;
+                    document.Add(title);
+
+                    // Buat tabel PDF sesuai jumlah kolom di DataGridView
+                    PdfPTable pdfTable = new PdfPTable(dataGridViewDelivery.Columns.Count);
+                    pdfTable.DefaultCell.Padding = 3;
+                    pdfTable.WidthPercentage = 100;
+                    pdfTable.HorizontalAlignment = Element.ALIGN_LEFT;
+
+                    // Tambahkan header
+                    foreach (DataGridViewColumn column in dataGridViewDelivery.Columns)
+                    {
+                        PdfPCell cell = new PdfPCell(new Phrase(column.HeaderText));
+                        cell.BackgroundColor = new BaseColor(System.Drawing.Color.LightGray);
+                        pdfTable.AddCell(cell);
+                    }
+
+                    // Tambahkan baris
+                    foreach (DataGridViewRow row in dataGridViewDelivery.Rows)
+                    {
+                        foreach (DataGridViewCell cell in row.Cells)
+                        {
+                            pdfTable.AddCell(cell.Value?.ToString() ?? "");
+                        }
+                    }
+
+                    // Tambahkan tabel ke dokumen
+                    document.Add(pdfTable);
+
+                    // Tutup dokumen
+                    document.Close();
+
+                    MessageBox.Show("Data berhasil diekspor ke PDF!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error saat ekspor ke PDF: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
     }
 }

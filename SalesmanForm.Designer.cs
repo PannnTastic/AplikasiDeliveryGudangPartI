@@ -24,6 +24,8 @@
             this.labelPhone = new System.Windows.Forms.Label();
             this.textBoxPhone = new System.Windows.Forms.TextBox();
             this.buttonRefresh = new System.Windows.Forms.Button();
+            this.buttonExportCsv = new System.Windows.Forms.Button();
+            this.buttonExportPdf = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewSalesman)).BeginInit();
             this.SuspendLayout();
             // 
@@ -110,9 +112,31 @@
             this.buttonRefresh.UseVisualStyleBackColor = true;
             this.buttonRefresh.Click += new System.EventHandler(this.buttonRefresh_Click);
             // 
+            // buttonExportCsv
+            // 
+            this.buttonExportCsv.Location = new System.Drawing.Point(490, 231);
+            this.buttonExportCsv.Name = "buttonExportCsv";
+            this.buttonExportCsv.Size = new System.Drawing.Size(85, 40);
+            this.buttonExportCsv.TabIndex = 9;
+            this.buttonExportCsv.Text = "Export CSV";
+            this.buttonExportCsv.UseVisualStyleBackColor = true;
+            this.buttonExportCsv.Click += new System.EventHandler(this.buttonExportCsv_Click);
+            // 
+            // buttonExportPdf
+            // 
+            this.buttonExportPdf.Location = new System.Drawing.Point(490, 281);
+            this.buttonExportPdf.Name = "buttonExportPdf";
+            this.buttonExportPdf.Size = new System.Drawing.Size(85, 40);
+            this.buttonExportPdf.TabIndex = 10;
+            this.buttonExportPdf.Text = "Export PDF";
+            this.buttonExportPdf.UseVisualStyleBackColor = true;
+            this.buttonExportPdf.Click += new System.EventHandler(this.buttonExportPdf_Click);
+            // 
             // SalesmanForm
             // 
             this.ClientSize = new System.Drawing.Size(592, 434);
+            this.Controls.Add(this.buttonExportPdf);
+            this.Controls.Add(this.buttonExportCsv);
             this.Controls.Add(this.buttonRefresh);
             this.Controls.Add(this.buttonDelete);
             this.Controls.Add(this.buttonUpdate);
@@ -139,5 +163,7 @@
         private System.Windows.Forms.Label labelPhone;
         private System.Windows.Forms.TextBox textBoxPhone;
         private System.Windows.Forms.Button buttonRefresh;
+        private System.Windows.Forms.Button buttonExportCsv;
+        private System.Windows.Forms.Button buttonExportPdf;
     }
 }

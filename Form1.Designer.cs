@@ -46,6 +46,7 @@
             this.buttonOpenProductForm = new System.Windows.Forms.Button();
             this.buttonExportReport = new System.Windows.Forms.Button();
             this.buttonAnalyzeQuery = new System.Windows.Forms.Button();
+            this.buttonExportPdf = new System.Windows.Forms.Button();
             this.groupBoxInput.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownQuantity)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewDelivery)).BeginInit();
@@ -234,11 +235,11 @@
             // 
             this.buttonExportReport.BackColor = System.Drawing.Color.Lime;
             this.buttonExportReport.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonExportReport.Location = new System.Drawing.Point(705, 550);
+            this.buttonExportReport.Location = new System.Drawing.Point(685, 550);
             this.buttonExportReport.Name = "buttonExportReport";
-            this.buttonExportReport.Size = new System.Drawing.Size(75, 30);
+            this.buttonExportReport.Size = new System.Drawing.Size(95, 30);
             this.buttonExportReport.TabIndex = 16;
-            this.buttonExportReport.Text = "Export";
+            this.buttonExportReport.Text = "Export CSV";
             this.buttonExportReport.UseVisualStyleBackColor = false;
             this.buttonExportReport.Click += new System.EventHandler(this.ButtonExportReport_Click);
             // 
@@ -254,10 +255,23 @@
             this.buttonAnalyzeQuery.UseVisualStyleBackColor = false;
             this.buttonAnalyzeQuery.Click += new System.EventHandler(this.ButtonAnalyzeQuery_Click);
             // 
+            // buttonExportPdf
+            // 
+            this.buttonExportPdf.BackColor = System.Drawing.Color.Crimson;
+            this.buttonExportPdf.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonExportPdf.Location = new System.Drawing.Point(587, 550);
+            this.buttonExportPdf.Name = "buttonExportPdf";
+            this.buttonExportPdf.Size = new System.Drawing.Size(92, 30);
+            this.buttonExportPdf.TabIndex = 18;
+            this.buttonExportPdf.Text = "Export PDF";
+            this.buttonExportPdf.UseVisualStyleBackColor = false;
+            this.buttonExportPdf.Click += new System.EventHandler(this.buttonExportPdf_Click);
+            // 
             // Delivery
             // 
             this.BackColor = System.Drawing.Color.LightSteelBlue;
             this.ClientSize = new System.Drawing.Size(800, 600);
+            this.Controls.Add(this.buttonExportPdf);
             this.Controls.Add(this.buttonAnalyzeQuery);
             this.Controls.Add(this.buttonExportReport);
             this.Controls.Add(this.buttonRefresh);
@@ -294,5 +308,6 @@
         private System.Windows.Forms.Label labelQuantity;
         private System.Windows.Forms.Button buttonExportReport;
         private System.Windows.Forms.Button buttonAnalyzeQuery;
+        private System.Windows.Forms.Button buttonExportPdf;
     }
 }
