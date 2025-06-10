@@ -23,6 +23,7 @@
             this.buttonDelete = new System.Windows.Forms.Button();
             this.labelPhone = new System.Windows.Forms.Label();
             this.textBoxPhone = new System.Windows.Forms.TextBox();
+            this.buttonRefresh = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewSalesman)).BeginInit();
             this.SuspendLayout();
             // 
@@ -33,8 +34,9 @@
             this.dataGridViewSalesman.Name = "dataGridViewSalesman";
             this.dataGridViewSalesman.RowHeadersWidth = 51;
             this.dataGridViewSalesman.RowTemplate.Height = 24;
-            this.dataGridViewSalesman.Size = new System.Drawing.Size(400, 200);
+            this.dataGridViewSalesman.Size = new System.Drawing.Size(555, 200);
             this.dataGridViewSalesman.TabIndex = 0;
+            this.dataGridViewSalesman.SelectionChanged += new System.EventHandler(this.DataGridViewSalesman_SelectionChanged);
             // 
             // textBoxSalesmanName
             // 
@@ -98,9 +100,20 @@
             this.textBoxPhone.Size = new System.Drawing.Size(400, 22);
             this.textBoxPhone.TabIndex = 7;
             // 
+            // buttonRefresh
+            // 
+            this.buttonRefresh.Location = new System.Drawing.Point(383, 357);
+            this.buttonRefresh.Name = "buttonRefresh";
+            this.buttonRefresh.Size = new System.Drawing.Size(103, 40);
+            this.buttonRefresh.TabIndex = 8;
+            this.buttonRefresh.Text = "Refresh";
+            this.buttonRefresh.UseVisualStyleBackColor = true;
+            this.buttonRefresh.Click += new System.EventHandler(this.buttonRefresh_Click);
+            // 
             // SalesmanForm
             // 
-            this.ClientSize = new System.Drawing.Size(450, 434);
+            this.ClientSize = new System.Drawing.Size(592, 434);
+            this.Controls.Add(this.buttonRefresh);
             this.Controls.Add(this.buttonDelete);
             this.Controls.Add(this.buttonUpdate);
             this.Controls.Add(this.buttonAdd);
@@ -115,9 +128,6 @@
             this.ResumeLayout(false);
             this.PerformLayout();
 
-            this.dataGridViewSalesman.SelectionChanged += new System.EventHandler(this.DataGridViewSalesman_SelectionChanged);
-
-
         }
 
         private System.Windows.Forms.DataGridView dataGridViewSalesman;
@@ -128,6 +138,6 @@
         private System.Windows.Forms.Button buttonDelete;
         private System.Windows.Forms.Label labelPhone;
         private System.Windows.Forms.TextBox textBoxPhone;
-
+        private System.Windows.Forms.Button buttonRefresh;
     }
 }

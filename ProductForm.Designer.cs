@@ -23,6 +23,7 @@
             this.buttonDelete = new System.Windows.Forms.Button();
             this.labelStockQuantity = new System.Windows.Forms.Label();
             this.numericUpDownStockQuantity = new System.Windows.Forms.NumericUpDown();
+            this.buttonRefresh = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewProducts)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownStockQuantity)).BeginInit();
             this.SuspendLayout();
@@ -34,7 +35,7 @@
             this.dataGridViewProducts.Name = "dataGridViewProducts";
             this.dataGridViewProducts.RowHeadersWidth = 51;
             this.dataGridViewProducts.RowTemplate.Height = 24;
-            this.dataGridViewProducts.Size = new System.Drawing.Size(400, 200);
+            this.dataGridViewProducts.Size = new System.Drawing.Size(553, 200);
             this.dataGridViewProducts.TabIndex = 0;
             this.dataGridViewProducts.SelectionChanged += new System.EventHandler(this.DataGridViewProducts_SelectionChanged);
             // 
@@ -100,9 +101,20 @@
             this.numericUpDownStockQuantity.Size = new System.Drawing.Size(400, 22);
             this.numericUpDownStockQuantity.TabIndex = 7;
             // 
+            // buttonRefresh
+            // 
+            this.buttonRefresh.Location = new System.Drawing.Point(378, 339);
+            this.buttonRefresh.Name = "buttonRefresh";
+            this.buttonRefresh.Size = new System.Drawing.Size(98, 30);
+            this.buttonRefresh.TabIndex = 9;
+            this.buttonRefresh.Text = "Refresh";
+            this.buttonRefresh.UseVisualStyleBackColor = true;
+            this.buttonRefresh.Click += new System.EventHandler(this.buttonRefresh_Click);
+            // 
             // ProductForm
             // 
-            this.ClientSize = new System.Drawing.Size(450, 392);
+            this.ClientSize = new System.Drawing.Size(599, 392);
+            this.Controls.Add(this.buttonRefresh);
             this.Controls.Add(this.labelStockQuantity);
             this.Controls.Add(this.numericUpDownStockQuantity);
             this.Controls.Add(this.buttonDelete);
@@ -128,6 +140,6 @@
         private System.Windows.Forms.Button buttonDelete;
         private System.Windows.Forms.Label labelStockQuantity;
         private System.Windows.Forms.NumericUpDown numericUpDownStockQuantity;
-
+        private System.Windows.Forms.Button buttonRefresh;
     }
 }

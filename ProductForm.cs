@@ -2,13 +2,20 @@
 using System.Data;
 using System.Data.SqlClient;
 using System.Windows.Forms;
+using System.Runtime.Caching;
 
 namespace DeliveryApp
 {
     public partial class ProductForm : Form
     {
         private readonly string connectionString = @"Server=LAPTOP-EKC9LDBK\PANNNTASTIC;Database=pabd;Trusted_Connection=True;";
+        private readonly MemoryCache _cache = MemoryCache.Default;
+        private readonly CacheItemPolicy _policy = new CacheItemPolicy
+        {
+            AbsoluteExpiration = DateTimeOffset.Now.AddMinutes(5)
+        };
 
+        private const string CACHE_KEY_PRODUCTS = "ProductsData";
         public ProductForm()
         {
             InitializeComponent();
@@ -19,18 +26,29 @@ namespace DeliveryApp
         {
             try
             {
-                using (SqlConnection connection = new SqlConnection(connectionString))
+                DataTable cachedTable;
+
+                if (_cache.Contains(CACHE_KEY_PRODUCTS))
                 {
-                    connection.Open();
-                    SqlCommand command = new SqlCommand("spGetAllProducts", connection);
-                    command.CommandType = CommandType.StoredProcedure;
-
-                    SqlDataAdapter adapter = new SqlDataAdapter(command);
-                    DataTable dataTable = new DataTable();
-                    adapter.Fill(dataTable);
-
-                    dataGridViewProducts.DataSource = dataTable;
+                    cachedTable = _cache.Get(CACHE_KEY_PRODUCTS) as DataTable;
                 }
+                else
+                {
+                    using (SqlConnection connection = new SqlConnection(connectionString))
+                    {
+                        connection.Open();
+                        SqlCommand command = new SqlCommand("spGetAllProducts", connection);
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        SqlDataAdapter adapter = new SqlDataAdapter(command);
+                        cachedTable = new DataTable();
+                        adapter.Fill(cachedTable);
+
+                        _cache.Set(CACHE_KEY_PRODUCTS, cachedTable, _policy);
+                    }
+                }
+
+                dataGridViewProducts.DataSource = cachedTable;
             }
             catch (Exception ex)
             {
@@ -73,9 +91,9 @@ namespace DeliveryApp
                     string resultMessage = command.Parameters["@result_message"].Value.ToString();
                     MessageBox.Show(resultMessage, "Result", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                    LoadProductData();
-                    textBoxProductName.Clear();
-                    numericUpDownStockQuantity.Value = 0;
+                    _cache.Remove(CACHE_KEY_PRODUCTS); // Hapus cache
+                    LoadProductData(); // Reload dari DB
+                    ClearForm();
                 }
             }
             catch (Exception ex)
@@ -92,7 +110,7 @@ namespace DeliveryApp
                 return;
             }
 
-            string productId = dataGridViewProducts.SelectedRows[0].Cells["Product ID"].Value.ToString();
+            string productId = dataGridViewProducts.SelectedRows[0].Cells["ProductID"].Value.ToString();
             string productName = textBoxProductName.Text;
             int stockQuantity = (int)numericUpDownStockQuantity.Value;
 
@@ -138,9 +156,9 @@ namespace DeliveryApp
                     string resultMessage = command.Parameters["@result_message"].Value.ToString();
                     MessageBox.Show(resultMessage, "Result", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                    LoadProductData();
-                    textBoxProductName.Clear();
-                    numericUpDownStockQuantity.Value = 0;
+                    _cache.Remove(CACHE_KEY_PRODUCTS); // Hapus cache
+                    LoadProductData(); // Reload dari DB
+                    ClearForm();
                 }
             }
             catch (Exception ex)
@@ -156,7 +174,7 @@ namespace DeliveryApp
                 return;
             }
 
-            string productId = dataGridViewProducts.SelectedRows[0].Cells["Product ID"].Value.ToString();
+            string productId = dataGridViewProducts.SelectedRows[0].Cells["ProductID"].Value.ToString();
 
             var confirmResult = MessageBox.Show(
                 "Are you sure you want to delete this Product?",
@@ -192,7 +210,8 @@ namespace DeliveryApp
                     string resultMessage = command.Parameters["@result_message"].Value.ToString();
                     MessageBox.Show(resultMessage, "Result", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                    LoadProductData();
+                    _cache.Remove(CACHE_KEY_PRODUCTS); // Hapus cache
+                    LoadProductData(); // Reload dari DB
                 }
             }
             catch (Exception ex)
@@ -206,11 +225,32 @@ namespace DeliveryApp
         {
             if (dataGridViewProducts.SelectedRows.Count > 0)
             {
-                string productName = dataGridViewProducts.SelectedRows[0].Cells["Product Name"].Value.ToString();
-                int stockQuantity = int.Parse(dataGridViewProducts.SelectedRows[0].Cells["Stock Quantity"].Value.ToString());
+                string productName = dataGridViewProducts.SelectedRows[0].Cells["ProductName"].Value.ToString();
+                int stockQuantity = int.Parse(dataGridViewProducts.SelectedRows[0].Cells["StockQuantity"].Value.ToString());
 
                 textBoxProductName.Text = productName;
                 numericUpDownStockQuantity.Value = stockQuantity;
+            }
+        }
+
+        private void ClearForm()
+        {
+            textBoxProductName.Clear();
+            numericUpDownStockQuantity.Value = 0;
+        }
+
+        private void buttonRefresh_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                _cache.Remove(CACHE_KEY_PRODUCTS);
+                LoadProductData();
+                ClearForm();
+                MessageBox.Show("Product data refreshed from database.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error refreshing product data: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

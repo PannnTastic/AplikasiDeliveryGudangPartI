@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using System.Runtime.Caching;
 
 namespace DeliveryApp
 {
@@ -11,12 +12,25 @@ namespace DeliveryApp
     {
         private readonly string connectionString = @"Server=LAPTOP-EKC9LDBK\PANNNTASTIC;Database=pabd;Trusted_Connection=True;";
 
+        private readonly MemoryCache _cache = MemoryCache.Default;
+        private readonly CacheItemPolicy _policy = new CacheItemPolicy
+        {
+            AbsoluteExpiration = DateTimeOffset.Now.AddMinutes(5) // Cache berlaku 5 menit
+        };
+
+        private const string CACHE_KEY_DELIVERIES = "DeliveryData";
+        private const string CACHE_KEY_PRODUCTS = "ProductData";
+        private const string CACHE_KEY_SALESMAN = "SalesmanData";
+
         public Delivery()
         {
             InitializeComponent();
-            LoadSalesmanData();
-            LoadProductData();
             LoadDeliveryData();
+            LoadProductData();
+            LoadSalesmanData();
+            ClearForm(); // Bersihkan form input saat pertama kali dibuka
+
+
             dateTimePickerDeliveryDate.ValueChanged += DateTimePickerDeliveryDate_ValueChanged;
         }
 
@@ -24,16 +38,27 @@ namespace DeliveryApp
         {
             try
             {
-                using (SqlConnection connection = new SqlConnection(connectionString))
+                DataTable dt;
+                if (_cache.Contains(CACHE_KEY_SALESMAN))
                 {
-                    connection.Open();
-                    SqlCommand command = new SqlCommand("SELECT salesman_id, full_name FROM salesman", connection);
-                    SqlDataReader reader = command.ExecuteReader();
-                    while (reader.Read())
+                    dt = _cache.Get(CACHE_KEY_SALESMAN) as DataTable;
+                }
+                else
+                {
+                    using (SqlConnection connection = new SqlConnection(connectionString))
                     {
-                        comboBoxSalesmanId.Items.Add($"{reader["salesman_id"]} - {reader["full_name"]}");
+                        connection.Open();
+                        SqlCommand command = new SqlCommand("spGetAllSalesman", connection);
+                        command.CommandType = CommandType.StoredProcedure;
+                        SqlDataAdapter adapter = new SqlDataAdapter(command);
+                        dt = new DataTable();
+                        adapter.Fill(dt);
+                        _cache.Set(CACHE_KEY_SALESMAN, dt, _policy);
                     }
                 }
+                comboBoxSalesmanId.DataSource = dt;
+                comboBoxSalesmanId.DisplayMember = "FullName";
+                comboBoxSalesmanId.ValueMember = "SalesmanID";
             }
             catch (Exception ex)
             {
@@ -45,16 +70,27 @@ namespace DeliveryApp
         {
             try
             {
-                using (SqlConnection connection = new SqlConnection(connectionString))
+                DataTable dt;
+                if (_cache.Contains(CACHE_KEY_PRODUCTS))
                 {
-                    connection.Open();
-                    SqlCommand command = new SqlCommand("SELECT product_id, product_name FROM products", connection);
-                    SqlDataReader reader = command.ExecuteReader();
-                    while (reader.Read())
+                    dt = _cache.Get(CACHE_KEY_PRODUCTS) as DataTable;
+                }
+                else
+                {
+                    using (SqlConnection connection = new SqlConnection(connectionString))
                     {
-                        comboBoxProductId.Items.Add($"{reader["product_id"]} - {reader["product_name"]}");
+                        connection.Open();
+                        SqlCommand command = new SqlCommand("spGetAllProducts", connection);
+                        command.CommandType = CommandType.StoredProcedure;
+                        SqlDataAdapter adapter = new SqlDataAdapter(command);
+                        dt = new DataTable();
+                        adapter.Fill(dt);
+                        _cache.Set(CACHE_KEY_PRODUCTS, dt, _policy);
                     }
                 }
+                comboBoxProductId.DataSource = dt;
+                comboBoxProductId.DisplayMember = "ProductName";
+                comboBoxProductId.ValueMember = "ProductID";
             }
             catch (Exception ex)
             {
@@ -62,22 +98,34 @@ namespace DeliveryApp
             }
         }
 
+
         private void LoadDeliveryData()
         {
             try
             {
-                using (SqlConnection connection = new SqlConnection(connectionString))
+                DataTable dt;
+
+                if (_cache.Contains(CACHE_KEY_DELIVERIES))
                 {
-                    connection.Open();
-                    SqlCommand command = new SqlCommand("spGetAllDeliveries", connection);
-                    command.CommandType = CommandType.StoredProcedure;
-
-                    SqlDataAdapter adapter = new SqlDataAdapter(command);
-                    DataTable dataTable = new DataTable();
-                    adapter.Fill(dataTable);
-
-                    dataGridViewDelivery.DataSource = dataTable;
+                    dt = _cache.Get(CACHE_KEY_DELIVERIES) as DataTable;
                 }
+                else
+                {
+                    using (SqlConnection connection = new SqlConnection(connectionString))
+                    {
+                        connection.Open();
+                        SqlCommand command = new SqlCommand("spGetAllDeliveries", connection);
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        SqlDataAdapter adapter = new SqlDataAdapter(command);
+                        dt = new DataTable();
+                        adapter.Fill(dt);
+
+                        _cache.Set(CACHE_KEY_DELIVERIES, dt, _policy);
+                    }
+                }
+
+                dataGridViewDelivery.DataSource = dt;
             }
             catch (Exception ex)
             {
@@ -128,8 +176,9 @@ namespace DeliveryApp
 
                     string resultMessage = command.Parameters["@result_message"].Value.ToString();
                     MessageBox.Show(resultMessage, "Result", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                    LoadDeliveryData(); // Refresh grid
+                    _cache.Remove(CACHE_KEY_DELIVERIES); // Hapus cache agar data refresh
+                    LoadDeliveryData(); // Reload dengan data terbaru
+                    ClearForm(); // Bersihkan form input
                 }
             }
             catch (Exception ex)
@@ -189,8 +238,9 @@ namespace DeliveryApp
 
                     string resultMessage = command.Parameters["@result_message"].Value.ToString();
                     MessageBox.Show(resultMessage, "Result", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                    LoadDeliveryData();
+                    _cache.Remove(CACHE_KEY_DELIVERIES); // Hapus cache agar data refresh
+                    LoadDeliveryData(); // Reload dengan data terbaru
+                    ClearForm(); // Bersihkan form input
                 }
             }
             catch (Exception ex)
@@ -243,8 +293,9 @@ namespace DeliveryApp
 
                     string resultMessage = command.Parameters["@result_message"].Value.ToString();
                     MessageBox.Show(resultMessage, "Result", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                    LoadDeliveryData();
+                    _cache.Remove(CACHE_KEY_DELIVERIES); // Hapus cache agar data refresh
+                    LoadDeliveryData(); // Reload dengan data terbaru
+                    ClearForm(); // Bersihkan form input setelah penghapusan
                 }
             }
             catch (Exception ex)
@@ -257,7 +308,9 @@ namespace DeliveryApp
         {
             try
             {
-                LoadDeliveryData();
+                _cache.Remove(CACHE_KEY_DELIVERIES); // Hapus cache agar data refresh
+                LoadDeliveryData(); // Reload dengan data terbaru
+                ClearForm(); // Bersihkan form input
                 MessageBox.Show("Data refreshed successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
@@ -286,37 +339,14 @@ namespace DeliveryApp
                 string salesmanId = dataGridViewDelivery.SelectedRows[0].Cells["salesman_id"].Value.ToString();
                 string productId = dataGridViewDelivery.SelectedRows[0].Cells["product_id"].Value.ToString();
                 string quantity = dataGridViewDelivery.SelectedRows[0].Cells["quantity"].Value.ToString();
+                
 
                 // Isi field input dengan data dari baris yang dipilih
                 
                 dateTimePickerDeliveryDate.Value = DateTime.Parse(deliveryDate);
-                comboBoxSalesmanId.SelectedItem = $"{salesmanId} - {GetSalesmanName(salesmanId)}";
-                comboBoxProductId.SelectedItem = $"{productId} - {GetProductName(productId)}";
+                comboBoxSalesmanId.SelectedValue = salesmanId;
+                comboBoxProductId.SelectedValue = productId;
                 numericUpDownQuantity.Value = int.Parse(quantity);
-            }
-        }
-
-        // Helper untuk mendapatkan nama salesman berdasarkan ID
-        private string GetSalesmanName(string salesmanId)
-        {
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-                SqlCommand command = new SqlCommand("SELECT full_name FROM salesman WHERE salesman_id = @salesmanId", connection);
-                command.Parameters.AddWithValue("@salesmanId", salesmanId);
-                return command.ExecuteScalar()?.ToString() ?? string.Empty;
-            }
-        }
-
-        // Helper untuk mendapatkan nama produk berdasarkan ID
-        private string GetProductName(string productId)
-        {
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-                SqlCommand command = new SqlCommand("SELECT product_name FROM products WHERE product_id = @productId", connection);
-                command.Parameters.AddWithValue("@productId", productId);
-                return command.ExecuteScalar()?.ToString() ?? string.Empty;
             }
         }
 
@@ -374,6 +404,55 @@ namespace DeliveryApp
                 MessageBox.Show($"Error exporting report: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        private void AnalyzeQuery(string sqlQuery)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.InfoMessage += (sender, e) =>
+                    {
+                        MessageBox.Show(e.Message, "Query Statistics");
+                    };
+
+                    connection.Open();
+
+                    string wrappedQuery = $@"
+                    SET STATISTICS IO ON;
+                    SET STATISTICS TIME ON;
+                    {sqlQuery};
+                    SET STATISTICS IO OFF;
+                    SET STATISTICS TIME OFF;";
+
+                    using (SqlCommand command = new SqlCommand(wrappedQuery, connection))
+                    {
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error analyzing query: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void ButtonAnalyzeQuery_Click(object sender, EventArgs e)
+        {
+            string heavyQuery = "EXEC spGetAllDeliveries";
+            AnalyzeQuery(heavyQuery);
+        }
+
+        private void ClearForm()
+        {
+            dateTimePickerDeliveryDate.Value = DateTime.Now;
+            comboBoxSalesmanId.SelectedIndex = -1;
+            comboBoxProductId.SelectedIndex = -1;
+            numericUpDownQuantity.Value = numericUpDownQuantity.Minimum;
+            dataGridViewDelivery.ClearSelection();
+
+        }
+
 
 
     }

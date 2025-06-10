@@ -45,6 +45,7 @@
             this.buttonOpenSalesmanForm = new System.Windows.Forms.Button();
             this.buttonOpenProductForm = new System.Windows.Forms.Button();
             this.buttonExportReport = new System.Windows.Forms.Button();
+            this.buttonAnalyzeQuery = new System.Windows.Forms.Button();
             this.groupBoxInput.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownQuantity)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewDelivery)).BeginInit();
@@ -239,12 +240,25 @@
             this.buttonExportReport.TabIndex = 16;
             this.buttonExportReport.Text = "Export";
             this.buttonExportReport.UseVisualStyleBackColor = false;
-            buttonExportReport.Click += ButtonExportReport_Click;
+            this.buttonExportReport.Click += new System.EventHandler(this.ButtonExportReport_Click);
+            // 
+            // buttonAnalyzeQuery
+            // 
+            this.buttonAnalyzeQuery.BackColor = System.Drawing.Color.DodgerBlue;
+            this.buttonAnalyzeQuery.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonAnalyzeQuery.Location = new System.Drawing.Point(361, 550);
+            this.buttonAnalyzeQuery.Name = "buttonAnalyzeQuery";
+            this.buttonAnalyzeQuery.Size = new System.Drawing.Size(75, 30);
+            this.buttonAnalyzeQuery.TabIndex = 17;
+            this.buttonAnalyzeQuery.Text = "Analyze";
+            this.buttonAnalyzeQuery.UseVisualStyleBackColor = false;
+            this.buttonAnalyzeQuery.Click += new System.EventHandler(this.ButtonAnalyzeQuery_Click);
             // 
             // Delivery
             // 
             this.BackColor = System.Drawing.Color.LightSteelBlue;
             this.ClientSize = new System.Drawing.Size(800, 600);
+            this.Controls.Add(this.buttonAnalyzeQuery);
             this.Controls.Add(this.buttonExportReport);
             this.Controls.Add(this.buttonRefresh);
             this.Controls.Add(this.buttonOpenSalesmanForm);
@@ -279,5 +293,6 @@
         private System.Windows.Forms.Label labelProductId;
         private System.Windows.Forms.Label labelQuantity;
         private System.Windows.Forms.Button buttonExportReport;
+        private System.Windows.Forms.Button buttonAnalyzeQuery;
     }
 }
