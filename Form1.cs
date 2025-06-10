@@ -139,8 +139,8 @@ namespace DeliveryApp
         private void ButtonSubmit_Click(object sender, EventArgs e)
         {
             DateTime deliveryDate = dateTimePickerDeliveryDate.Value;
-            string salesmanId = comboBoxSalesmanId.SelectedItem?.ToString()?.Split('-')[0].Trim();
-            string productId = comboBoxProductId.SelectedItem?.ToString()?.Split('-')[0].Trim();
+            string salesmanId = comboBoxSalesmanId.SelectedValue?.ToString()?.Split('-')[0].Trim();
+            string productId = comboBoxProductId.SelectedValue?.ToString()?.Split('-')[0].Trim();
             int quantity = (int)numericUpDownQuantity.Value;
 
             if (deliveryDate < DateTime.Now)
@@ -201,8 +201,8 @@ namespace DeliveryApp
 
             string deliveryId = dataGridViewDelivery.SelectedRows[0].Cells["delivery_id"].Value.ToString();
             DateTime deliveryDate = dateTimePickerDeliveryDate.Value;
-            string salesmanId = comboBoxSalesmanId.SelectedItem?.ToString()?.Split('-')[0].Trim();
-            string productId = comboBoxProductId.SelectedItem?.ToString()?.Split('-')[0].Trim();
+            string salesmanId = comboBoxSalesmanId.SelectedValue?.ToString()?.Split('-')[0].Trim();
+            string productId = comboBoxProductId.SelectedValue?.ToString()?.Split('-')[0].Trim();
             int quantity = (int)numericUpDownQuantity.Value;
 
             var confirmResult = MessageBox.Show(
@@ -349,26 +349,7 @@ namespace DeliveryApp
             FormReportSalesman salesman = new FormReportSalesman();
             salesman.Show();
         }
-        private void DataGridViewDelivery_SelectionChanged(object sender, EventArgs e)
-        {
-            if (dataGridViewDelivery.SelectedRows.Count > 0)
-            {
-                // Ambil nilai dari kolom delivery_id
-                string deliveryId = dataGridViewDelivery.SelectedRows[0].Cells["delivery_id"].Value.ToString();
-                string deliveryDate = dataGridViewDelivery.SelectedRows[0].Cells["delivery_date"].Value.ToString();
-                string salesmanId = dataGridViewDelivery.SelectedRows[0].Cells["salesman_id"].Value.ToString();
-                string productId = dataGridViewDelivery.SelectedRows[0].Cells["product_id"].Value.ToString();
-                string quantity = dataGridViewDelivery.SelectedRows[0].Cells["quantity"].Value.ToString();
-                
-
-                // Isi field input dengan data dari baris yang dipilih
-                
-                dateTimePickerDeliveryDate.Value = DateTime.Parse(deliveryDate);
-                comboBoxSalesmanId.SelectedValue = salesmanId;
-                comboBoxProductId.SelectedValue = productId;
-                numericUpDownQuantity.Value = int.Parse(quantity);
-            }
-        }
+       
 
         private void DateTimePickerDeliveryDate_ValueChanged(object sender, EventArgs e)
         {
@@ -589,6 +570,23 @@ namespace DeliveryApp
             {
                 MessageBox.Show("Gagal membuat index: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void dataGridViewDelivery_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            string deliveryId = dataGridViewDelivery.SelectedRows[0].Cells["delivery_id"].Value.ToString();
+            string deliveryDate = dataGridViewDelivery.SelectedRows[0].Cells["delivery_date"].Value.ToString();
+            string salesmanId = dataGridViewDelivery.SelectedRows[0].Cells["salesman_id"].Value.ToString();
+            string productId = dataGridViewDelivery.SelectedRows[0].Cells["product_id"].Value.ToString();
+            string quantity = dataGridViewDelivery.SelectedRows[0].Cells["quantity"].Value.ToString();
+
+
+            // Isi field input dengan data dari baris yang dipilih
+
+            dateTimePickerDeliveryDate.Value = DateTime.Parse(deliveryDate);
+            comboBoxSalesmanId.SelectedValue = salesmanId;
+            comboBoxProductId.SelectedValue = productId;
+            numericUpDownQuantity.Value = int.Parse(quantity);
         }
     }
 }

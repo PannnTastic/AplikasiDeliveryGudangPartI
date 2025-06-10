@@ -202,7 +202,8 @@
             this.dataGridViewDelivery.RowTemplate.Height = 24;
             this.dataGridViewDelivery.Size = new System.Drawing.Size(760, 200);
             this.dataGridViewDelivery.TabIndex = 13;
-            this.dataGridViewDelivery.SelectionChanged += new System.EventHandler(this.DataGridViewDelivery_SelectionChanged);
+            this.dataGridViewDelivery.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewDelivery_CellClick);
+            
             // 
             // buttonRefresh
             // 
