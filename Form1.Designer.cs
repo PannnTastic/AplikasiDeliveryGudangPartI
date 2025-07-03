@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Delivery));
             this.groupBoxInput = new System.Windows.Forms.GroupBox();
             this.labelDeliveryDate = new System.Windows.Forms.Label();
             this.dateTimePickerDeliveryDate = new System.Windows.Forms.DateTimePicker();
@@ -50,9 +51,12 @@
             this.buttonOpenReportDelivery = new System.Windows.Forms.Button();
             this.buttonOpenReportProducts = new System.Windows.Forms.Button();
             this.buttonOpenReportSalesman = new System.Windows.Forms.Button();
+            this.searchBox = new System.Windows.Forms.TextBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.groupBoxInput.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownQuantity)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewDelivery)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBoxInput
@@ -196,20 +200,19 @@
             // 
             this.dataGridViewDelivery.BackgroundColor = System.Drawing.Color.White;
             this.dataGridViewDelivery.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewDelivery.Location = new System.Drawing.Point(20, 340);
+            this.dataGridViewDelivery.Location = new System.Drawing.Point(20, 389);
             this.dataGridViewDelivery.Name = "dataGridViewDelivery";
             this.dataGridViewDelivery.RowHeadersWidth = 51;
             this.dataGridViewDelivery.RowTemplate.Height = 24;
             this.dataGridViewDelivery.Size = new System.Drawing.Size(760, 200);
             this.dataGridViewDelivery.TabIndex = 13;
             this.dataGridViewDelivery.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewDelivery_CellClick);
-            
             // 
             // buttonRefresh
             // 
             this.buttonRefresh.BackColor = System.Drawing.Color.LightYellow;
             this.buttonRefresh.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonRefresh.Location = new System.Drawing.Point(20, 550);
+            this.buttonRefresh.Location = new System.Drawing.Point(20, 599);
             this.buttonRefresh.Name = "buttonRefresh";
             this.buttonRefresh.Size = new System.Drawing.Size(95, 30);
             this.buttonRefresh.TabIndex = 13;
@@ -239,7 +242,7 @@
             // 
             this.buttonExportReport.BackColor = System.Drawing.Color.Lime;
             this.buttonExportReport.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonExportReport.Location = new System.Drawing.Point(685, 550);
+            this.buttonExportReport.Location = new System.Drawing.Point(685, 599);
             this.buttonExportReport.Name = "buttonExportReport";
             this.buttonExportReport.Size = new System.Drawing.Size(95, 30);
             this.buttonExportReport.TabIndex = 16;
@@ -251,7 +254,7 @@
             // 
             this.buttonAnalyzeQuery.BackColor = System.Drawing.Color.DodgerBlue;
             this.buttonAnalyzeQuery.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonAnalyzeQuery.Location = new System.Drawing.Point(361, 550);
+            this.buttonAnalyzeQuery.Location = new System.Drawing.Point(361, 599);
             this.buttonAnalyzeQuery.Name = "buttonAnalyzeQuery";
             this.buttonAnalyzeQuery.Size = new System.Drawing.Size(75, 30);
             this.buttonAnalyzeQuery.TabIndex = 17;
@@ -263,7 +266,7 @@
             // 
             this.buttonExportPdf.BackColor = System.Drawing.Color.Crimson;
             this.buttonExportPdf.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonExportPdf.Location = new System.Drawing.Point(587, 550);
+            this.buttonExportPdf.Location = new System.Drawing.Point(587, 599);
             this.buttonExportPdf.Name = "buttonExportPdf";
             this.buttonExportPdf.Size = new System.Drawing.Size(92, 30);
             this.buttonExportPdf.TabIndex = 18;
@@ -273,7 +276,7 @@
             // 
             // buttonOpenReportDelivery
             // 
-            this.buttonOpenReportDelivery.Location = new System.Drawing.Point(618, 48);
+            this.buttonOpenReportDelivery.Location = new System.Drawing.Point(618, 37);
             this.buttonOpenReportDelivery.Name = "buttonOpenReportDelivery";
             this.buttonOpenReportDelivery.Size = new System.Drawing.Size(150, 30);
             this.buttonOpenReportDelivery.TabIndex = 19;
@@ -282,7 +285,7 @@
             // 
             // buttonOpenReportProducts
             // 
-            this.buttonOpenReportProducts.Location = new System.Drawing.Point(618, 84);
+            this.buttonOpenReportProducts.Location = new System.Drawing.Point(618, 73);
             this.buttonOpenReportProducts.Name = "buttonOpenReportProducts";
             this.buttonOpenReportProducts.Size = new System.Drawing.Size(150, 30);
             this.buttonOpenReportProducts.TabIndex = 20;
@@ -291,17 +294,37 @@
             // 
             // buttonOpenReportSalesman
             // 
-            this.buttonOpenReportSalesman.Location = new System.Drawing.Point(618, 120);
+            this.buttonOpenReportSalesman.Location = new System.Drawing.Point(618, 109);
             this.buttonOpenReportSalesman.Name = "buttonOpenReportSalesman";
             this.buttonOpenReportSalesman.Size = new System.Drawing.Size(150, 30);
             this.buttonOpenReportSalesman.TabIndex = 21;
             this.buttonOpenReportSalesman.Text = "Report Salesman";
             this.buttonOpenReportSalesman.Click += new System.EventHandler(this.ButtonOpenReportSalesman_Click);
             // 
+            // searchBox
+            // 
+            this.searchBox.Location = new System.Drawing.Point(40, 348);
+            this.searchBox.Name = "searchBox";
+            this.searchBox.Size = new System.Drawing.Size(245, 22);
+            this.searchBox.TabIndex = 22;
+            this.searchBox.Text = "Search";
+            this.searchBox.TextChanged += new System.EventHandler(this.searchBox_TextChanged);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Location = new System.Drawing.Point(15, 348);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(19, 22);
+            this.pictureBox1.TabIndex = 23;
+            this.pictureBox1.TabStop = false;
+            // 
             // Delivery
             // 
             this.BackColor = System.Drawing.Color.LightSteelBlue;
-            this.ClientSize = new System.Drawing.Size(800, 600);
+            this.ClientSize = new System.Drawing.Size(800, 639);
+            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.searchBox);
             this.Controls.Add(this.buttonOpenReportSalesman);
             this.Controls.Add(this.buttonOpenReportProducts);
             this.Controls.Add(this.buttonOpenReportDelivery);
@@ -319,7 +342,9 @@
             this.groupBoxInput.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownQuantity)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewDelivery)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -346,5 +371,7 @@
         private System.Windows.Forms.Button buttonOpenReportDelivery;
         private System.Windows.Forms.Button buttonOpenReportProducts;
         private System.Windows.Forms.Button buttonOpenReportSalesman;
+        private System.Windows.Forms.TextBox searchBox;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }

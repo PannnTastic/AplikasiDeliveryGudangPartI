@@ -325,29 +325,34 @@ namespace DeliveryApp
         {
             SalesmanForm salesmanForm = new SalesmanForm();
             salesmanForm.Show();
+            this.Hide(); // Sembunyikan form Delivery saat SalesmanForm dibuka
         }
 
         private void ButtonOpenProductForm_Click(object sender, EventArgs e)
         {
             ProductForm productForm = new ProductForm();
             productForm.Show();
+            this.Hide(); // Sembunyikan form Delivery saat ProductForm dibuka
         }
 
         private void ButtonOpenReportDelivery_Click(object sender, EventArgs e)
         {
             FormReportDelivery delivery = new FormReportDelivery();
             delivery.Show();
+            this.Hide(); // Sembunyikan form Delivery saat FormReportDelivery dibuka
         }
 
         private void ButtonOpenReportProducts_Click(object sender, EventArgs e)
         {
             FormReportProducts products = new FormReportProducts();
             products.Show();
+            this.Hide(); // Sembunyikan form Delivery saat FormReportProducts dibuka
         }
         private void ButtonOpenReportSalesman_Click(object sender, EventArgs e)
         {
             FormReportSalesman salesman = new FormReportSalesman();
             salesman.Show();
+            this.Hide(); // Sembunyikan form Delivery saat FormReportSalesman dibuka
         }
        
 
@@ -587,6 +592,46 @@ namespace DeliveryApp
             comboBoxSalesmanId.SelectedValue = salesmanId;
             comboBoxProductId.SelectedValue = productId;
             numericUpDownQuantity.Value = int.Parse(quantity);
+        }
+
+        private void searchBox_TextChanged(object sender, EventArgs e)
+        {
+            string searchText = searchBox.Text.Trim().ToLower();
+            
+            try
+            {
+                if (string.IsNullOrEmpty(searchText))
+                {
+                    // If search text is empty, reload all data
+                    LoadDeliveryData();
+                    return;
+                }
+
+                // Get the current data source
+                DataTable dataTable = dataGridViewDelivery.DataSource as DataTable;
+                if (dataTable == null)
+                {
+                    return;
+                }
+
+                // Create a filtered view of the data
+                dataTable.DefaultView.RowFilter = string.Format(
+                    "CONVERT(delivery_id, 'System.String') LIKE '%{0}%' OR " +
+                    "CONVERT(delivery_date, 'System.String') LIKE '%{0}%' OR " +
+                    "CONVERT(salesman_id, 'System.String') LIKE '%{0}%' OR " +
+                    "CONVERT(salesman_name, 'System.String') LIKE '%{0}%' OR " +
+                    "CONVERT(product_id, 'System.String') LIKE '%{0}%' OR " +
+                    "CONVERT(product_name, 'System.String') LIKE '%{0}%' OR " +
+                    "CONVERT(quantity, 'System.String') LIKE '%{0}%'",
+                    searchText.Replace("'", "''"));
+
+                // Apply the filtered view to the DataGridView
+                dataGridViewDelivery.DataSource = dataTable;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Search error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

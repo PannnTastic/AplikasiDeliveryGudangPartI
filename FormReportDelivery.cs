@@ -70,5 +70,12 @@ namespace DeliveryApp
 
 
         }
+
+        private void FormReportDelivery_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Delivery delivery = new Delivery();
+            delivery.Show();
+            this.Hide();
+        }
     }
 }

@@ -187,7 +187,7 @@ namespace DeliveryApp
                 return;
             }
 
-            string salesmanId = dataGridViewSalesman.SelectedRows[0].Cells["Salesman ID"].Value.ToString();
+            string salesmanId = dataGridViewSalesman.SelectedRows[0].Cells["SalesmanID"].Value.ToString();
 
             try
             {
@@ -362,6 +362,50 @@ namespace DeliveryApp
             catch (Exception ex)
             {
                 MessageBox.Show($"Error exporting to PDF: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void SalesmanForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Delivery delivery = new Delivery();
+            delivery.Show();
+            this.Hide(); // Sembunyikan form SalesmanForm saat menutupnya, agar tidak menghapusnya dari memori
+        }
+
+        private void searchBox_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                string searchText = searchBox.Text.Trim().ToLower();
+                
+                if (string.IsNullOrEmpty(searchText))
+                {
+                    // If search box is empty, show all data
+                    if (dataGridViewSalesman.DataSource is DataTable originalTable)
+                    {
+                        originalTable.DefaultView.RowFilter = string.Empty;
+                    }
+                    else
+                    {
+                        // If somehow the DataSource is not set, reload data
+                        LoadSalesmanData();
+                    }
+                }
+                else
+                {
+                    // Get the data source
+                    DataTable dataTable = (DataTable)dataGridViewSalesman.DataSource;
+                    if (dataTable != null)
+                    {
+                        // Filter by FullName or PhoneNumber containing the search text
+                        string filterExpression = $"FullName LIKE '%{searchText}%' OR PhoneNumber LIKE '%{searchText}%'";
+                        dataTable.DefaultView.RowFilter = filterExpression;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error searching data: {ex.Message}", "Search Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

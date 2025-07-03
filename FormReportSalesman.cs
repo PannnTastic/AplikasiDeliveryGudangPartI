@@ -61,5 +61,12 @@ namespace DeliveryApp
             reportViewer1.LocalReport.ReportPath = @"D:\KULIAH\SMT4 (ad matkul smt 6)\PABD\ucp1\ReportSalesman.rdlc"; // Ensure the report path is correct
             reportViewer1.RefreshReport();
         }
+
+        private void FormReportSalesman_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Delivery delivery = new Delivery();
+            delivery.Show();
+            this.Hide(); // Hide the report form instead of closing it
+        }
     }
 }

@@ -367,5 +367,42 @@ namespace DeliveryApp
                 MessageBox.Show($"Error exporting to CSV: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        private void ProductForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Delivery delivery = new Delivery();
+            delivery.Show();
+            this.Hide(); // Sembunyikan form saat berpindah ke form Delivery
+        }
+
+        private void searchBox_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                // Get the current DataTable from the DataGridView
+                if (dataGridViewProducts.DataSource is DataTable productsTable)
+                {
+                    string searchText = searchBox.Text.Trim();
+                    
+                    // If search box is empty, show all records
+                    if (string.IsNullOrEmpty(searchText))
+                    {
+                        productsTable.DefaultView.RowFilter = string.Empty;
+                        return;
+                    }
+
+                    // Build filter using case-insensitive string comparison
+                    string filterExpression = $"ProductName LIKE '%{searchText}%'";
+                    
+                    // Apply the filter to the DefaultView of the DataTable
+                    productsTable.DefaultView.RowFilter = filterExpression;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error searching products: {ex.Message}", "Search Error", 
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
     }
 }

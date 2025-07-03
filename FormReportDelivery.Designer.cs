@@ -49,6 +49,7 @@
             this.Controls.Add(this.reportViewer1);
             this.Name = "FormReportDelivery";
             this.Text = "FormReportDelivery";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormReportDelivery_FormClosing);
             this.Load += new System.EventHandler(this.FormReportDelivery_Load);
             this.ResumeLayout(false);
 

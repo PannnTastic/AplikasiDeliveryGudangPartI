@@ -61,6 +61,12 @@ namespace DeliveryApp
             reportViewer1.RefreshReport(); // Refresh the report viewer to display the report
 
         }
-        
+
+        private void FormReportProducts_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Delivery delivery = new Delivery();
+            delivery.Show();
+            this.Hide(); // Hide the current form instead of closing it
+        }
     }
 }

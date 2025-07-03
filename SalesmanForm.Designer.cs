@@ -15,6 +15,7 @@
 
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SalesmanForm));
             this.dataGridViewSalesman = new System.Windows.Forms.DataGridView();
             this.textBoxSalesmanName = new System.Windows.Forms.TextBox();
             this.labelSalesmanName = new System.Windows.Forms.Label();
@@ -26,13 +27,16 @@
             this.buttonRefresh = new System.Windows.Forms.Button();
             this.buttonExportCsv = new System.Windows.Forms.Button();
             this.buttonExportPdf = new System.Windows.Forms.Button();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.searchBox = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewSalesman)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // dataGridViewSalesman
             // 
             this.dataGridViewSalesman.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewSalesman.Location = new System.Drawing.Point(20, 20);
+            this.dataGridViewSalesman.Location = new System.Drawing.Point(20, 64);
             this.dataGridViewSalesman.Name = "dataGridViewSalesman";
             this.dataGridViewSalesman.RowHeadersWidth = 51;
             this.dataGridViewSalesman.RowTemplate.Height = 24;
@@ -42,7 +46,7 @@
             // 
             // textBoxSalesmanName
             // 
-            this.textBoxSalesmanName.Location = new System.Drawing.Point(20, 240);
+            this.textBoxSalesmanName.Location = new System.Drawing.Point(20, 284);
             this.textBoxSalesmanName.Name = "textBoxSalesmanName";
             this.textBoxSalesmanName.Size = new System.Drawing.Size(400, 22);
             this.textBoxSalesmanName.TabIndex = 1;
@@ -50,7 +54,7 @@
             // labelSalesmanName
             // 
             this.labelSalesmanName.AutoSize = true;
-            this.labelSalesmanName.Location = new System.Drawing.Point(20, 220);
+            this.labelSalesmanName.Location = new System.Drawing.Point(20, 264);
             this.labelSalesmanName.Name = "labelSalesmanName";
             this.labelSalesmanName.Size = new System.Drawing.Size(111, 16);
             this.labelSalesmanName.TabIndex = 2;
@@ -58,7 +62,7 @@
             // 
             // buttonAdd
             // 
-            this.buttonAdd.Location = new System.Drawing.Point(20, 357);
+            this.buttonAdd.Location = new System.Drawing.Point(20, 412);
             this.buttonAdd.Name = "buttonAdd";
             this.buttonAdd.Size = new System.Drawing.Size(100, 40);
             this.buttonAdd.TabIndex = 3;
@@ -68,7 +72,7 @@
             // 
             // buttonUpdate
             // 
-            this.buttonUpdate.Location = new System.Drawing.Point(140, 357);
+            this.buttonUpdate.Location = new System.Drawing.Point(140, 412);
             this.buttonUpdate.Name = "buttonUpdate";
             this.buttonUpdate.Size = new System.Drawing.Size(100, 40);
             this.buttonUpdate.TabIndex = 4;
@@ -78,7 +82,7 @@
             // 
             // buttonDelete
             // 
-            this.buttonDelete.Location = new System.Drawing.Point(260, 357);
+            this.buttonDelete.Location = new System.Drawing.Point(260, 412);
             this.buttonDelete.Name = "buttonDelete";
             this.buttonDelete.Size = new System.Drawing.Size(100, 40);
             this.buttonDelete.TabIndex = 5;
@@ -89,7 +93,7 @@
             // labelPhone
             // 
             this.labelPhone.AutoSize = true;
-            this.labelPhone.Location = new System.Drawing.Point(20, 270);
+            this.labelPhone.Location = new System.Drawing.Point(20, 314);
             this.labelPhone.Name = "labelPhone";
             this.labelPhone.Size = new System.Drawing.Size(49, 16);
             this.labelPhone.TabIndex = 6;
@@ -97,14 +101,14 @@
             // 
             // textBoxPhone
             // 
-            this.textBoxPhone.Location = new System.Drawing.Point(20, 290);
+            this.textBoxPhone.Location = new System.Drawing.Point(20, 334);
             this.textBoxPhone.Name = "textBoxPhone";
             this.textBoxPhone.Size = new System.Drawing.Size(400, 22);
             this.textBoxPhone.TabIndex = 7;
             // 
             // buttonRefresh
             // 
-            this.buttonRefresh.Location = new System.Drawing.Point(383, 357);
+            this.buttonRefresh.Location = new System.Drawing.Point(383, 412);
             this.buttonRefresh.Name = "buttonRefresh";
             this.buttonRefresh.Size = new System.Drawing.Size(103, 40);
             this.buttonRefresh.TabIndex = 8;
@@ -114,7 +118,7 @@
             // 
             // buttonExportCsv
             // 
-            this.buttonExportCsv.Location = new System.Drawing.Point(490, 231);
+            this.buttonExportCsv.Location = new System.Drawing.Point(490, 334);
             this.buttonExportCsv.Name = "buttonExportCsv";
             this.buttonExportCsv.Size = new System.Drawing.Size(85, 40);
             this.buttonExportCsv.TabIndex = 9;
@@ -124,7 +128,7 @@
             // 
             // buttonExportPdf
             // 
-            this.buttonExportPdf.Location = new System.Drawing.Point(490, 281);
+            this.buttonExportPdf.Location = new System.Drawing.Point(490, 284);
             this.buttonExportPdf.Name = "buttonExportPdf";
             this.buttonExportPdf.Size = new System.Drawing.Size(85, 40);
             this.buttonExportPdf.TabIndex = 10;
@@ -132,9 +136,29 @@
             this.buttonExportPdf.UseVisualStyleBackColor = true;
             this.buttonExportPdf.Click += new System.EventHandler(this.buttonExportPdf_Click);
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Location = new System.Drawing.Point(19, 25);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(19, 22);
+            this.pictureBox1.TabIndex = 25;
+            this.pictureBox1.TabStop = false;
+            // 
+            // searchBox
+            // 
+            this.searchBox.Location = new System.Drawing.Point(44, 25);
+            this.searchBox.Name = "searchBox";
+            this.searchBox.Size = new System.Drawing.Size(245, 22);
+            this.searchBox.TabIndex = 24;
+            this.searchBox.Text = "Search";
+            this.searchBox.TextChanged += new System.EventHandler(this.searchBox_TextChanged);
+            // 
             // SalesmanForm
             // 
-            this.ClientSize = new System.Drawing.Size(592, 434);
+            this.ClientSize = new System.Drawing.Size(592, 472);
+            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.searchBox);
             this.Controls.Add(this.buttonExportPdf);
             this.Controls.Add(this.buttonExportCsv);
             this.Controls.Add(this.buttonRefresh);
@@ -148,7 +172,9 @@
             this.Controls.Add(this.textBoxPhone);
             this.Name = "SalesmanForm";
             this.Text = "Manage Salesman";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SalesmanForm_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewSalesman)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -165,5 +191,7 @@
         private System.Windows.Forms.Button buttonRefresh;
         private System.Windows.Forms.Button buttonExportCsv;
         private System.Windows.Forms.Button buttonExportPdf;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.TextBox searchBox;
     }
 }
