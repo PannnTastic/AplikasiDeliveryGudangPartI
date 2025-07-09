@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Windows.Forms;
 using System.Runtime.Caching;
+using System.Windows.Forms;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 
@@ -12,8 +13,8 @@ namespace DeliveryApp
 {
     public partial class Delivery : Form
     {
-        private readonly string connectionString = @"Server=LAPTOP-EKC9LDBK\PANNNTASTIC;Database=pabd;Trusted_Connection=True;";
-
+        koneksi kn = new koneksi();
+       
         private readonly MemoryCache _cache = MemoryCache.Default;
         private readonly CacheItemPolicy _policy = new CacheItemPolicy
         {
@@ -27,6 +28,8 @@ namespace DeliveryApp
         public Delivery()
         {
             InitializeComponent();
+            numericUpDownQuantity.Maximum = 999999;
+            // Ambil string koneksi dari kelas koneksi
             EnsureIndexes(); // Pastikan index sudah dibuat saat form diinisialisasi
             LoadDeliveryData();
             LoadProductData();
@@ -48,7 +51,7 @@ namespace DeliveryApp
                 }
                 else
                 {
-                    using (SqlConnection connection = new SqlConnection(connectionString))
+                    using (SqlConnection connection = new SqlConnection(kn.ConnectionString()))
                     {
                         connection.Open();
                         SqlCommand command = new SqlCommand("spGetAllSalesman", connection);
@@ -80,7 +83,7 @@ namespace DeliveryApp
                 }
                 else
                 {
-                    using (SqlConnection connection = new SqlConnection(connectionString))
+                    using (SqlConnection connection = new SqlConnection(kn.ConnectionString()))
                     {
                         connection.Open();
                         SqlCommand command = new SqlCommand("spGetAllProducts", connection);
@@ -114,7 +117,7 @@ namespace DeliveryApp
                 }
                 else
                 {
-                    using (SqlConnection connection = new SqlConnection(connectionString))
+                    using (SqlConnection connection = new SqlConnection(kn.ConnectionString()))
                     {
                         connection.Open();
                         SqlCommand command = new SqlCommand("spGetAllDeliveries", connection);
@@ -155,7 +158,7 @@ namespace DeliveryApp
 
             try
             {
-                using (SqlConnection connection = new SqlConnection(connectionString))
+                using (SqlConnection connection = new SqlConnection(kn.ConnectionString()))
                 {
                     connection.Open();
 
@@ -218,7 +221,7 @@ namespace DeliveryApp
 
             try
             {
-                using (SqlConnection connection = new SqlConnection(connectionString))
+                using (SqlConnection connection = new SqlConnection(kn.ConnectionString()))
                 {
                     connection.Open();
 
@@ -277,7 +280,7 @@ namespace DeliveryApp
 
             try
             {
-                using (SqlConnection connection = new SqlConnection(connectionString))
+                using (SqlConnection connection = new SqlConnection(kn.ConnectionString()))
                 {
                     connection.Open();
 
@@ -373,7 +376,7 @@ namespace DeliveryApp
         {
             try
             {
-                using (SqlConnection connection = new SqlConnection(connectionString))
+                using (SqlConnection connection = new SqlConnection(kn.ConnectionString()))
                 {
                     connection.Open();
 
@@ -422,7 +425,7 @@ namespace DeliveryApp
         {
             try
             {
-                using (SqlConnection connection = new SqlConnection(connectionString))
+                using (SqlConnection connection = new SqlConnection(kn.ConnectionString()))
                 {
                     connection.InfoMessage += (sender, e) =>
                     {
@@ -452,7 +455,7 @@ namespace DeliveryApp
 
         private void ButtonAnalyzeQuery_Click(object sender, EventArgs e)
         {
-            string heavyQuery = "EXEC spGetAllDeliveries";
+            string heavyQuery = "EXEC spGetAllProducts";
             AnalyzeQuery(heavyQuery);
         }
 
@@ -563,7 +566,7 @@ namespace DeliveryApp
 
             try
             {
-                using (SqlConnection conn = new SqlConnection(connectionString))
+                using (SqlConnection conn = new SqlConnection(kn.ConnectionString()))
                 {
                     conn.Open();
 
@@ -579,19 +582,23 @@ namespace DeliveryApp
 
         private void dataGridViewDelivery_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            string deliveryId = dataGridViewDelivery.SelectedRows[0].Cells["delivery_id"].Value.ToString();
-            string deliveryDate = dataGridViewDelivery.SelectedRows[0].Cells["delivery_date"].Value.ToString();
-            string salesmanId = dataGridViewDelivery.SelectedRows[0].Cells["salesman_id"].Value.ToString();
-            string productId = dataGridViewDelivery.SelectedRows[0].Cells["product_id"].Value.ToString();
-            string quantity = dataGridViewDelivery.SelectedRows[0].Cells["quantity"].Value.ToString();
+            if (dataGridViewDelivery.SelectedRows.Count > 0)
+            {
+                string deliveryId = dataGridViewDelivery.SelectedRows[0].Cells["delivery_id"].Value.ToString();
+                string deliveryDate = dataGridViewDelivery.SelectedRows[0].Cells["delivery_date"].Value.ToString();
+                string salesmanId = dataGridViewDelivery.SelectedRows[0].Cells["salesman_id"].Value.ToString();
+                string productId = dataGridViewDelivery.SelectedRows[0].Cells["product_id"].Value.ToString();
+                string quantity = dataGridViewDelivery.SelectedRows[0].Cells["quantity"].Value.ToString();
 
 
-            // Isi field input dengan data dari baris yang dipilih
+                // Isi field input dengan data dari baris yang dipilih
 
-            dateTimePickerDeliveryDate.Value = DateTime.Parse(deliveryDate);
-            comboBoxSalesmanId.SelectedValue = salesmanId;
-            comboBoxProductId.SelectedValue = productId;
-            numericUpDownQuantity.Value = int.Parse(quantity);
+                dateTimePickerDeliveryDate.Value = DateTime.Parse(deliveryDate);
+                comboBoxSalesmanId.SelectedValue = salesmanId;
+                comboBoxProductId.SelectedValue = productId;
+                numericUpDownQuantity.Value = int.Parse(quantity);
+            }
+            
         }
 
         private void searchBox_TextChanged(object sender, EventArgs e)

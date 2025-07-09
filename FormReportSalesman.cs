@@ -9,11 +9,13 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SqlClient;
 using Microsoft.Reporting.WinForms;
+using System.IO;
 
 namespace DeliveryApp
 {
     public partial class FormReportSalesman : Form
     {
+        koneksi kn = new koneksi(); // Instance of the koneksi class to get the connection string
         public FormReportSalesman()
         {
             InitializeComponent();
@@ -28,7 +30,7 @@ namespace DeliveryApp
 
         private void SalesmanReport()
         {
-            string connectionString = "Data Source=LAPTOP-EKC9LDBK\\PANNNTASTIC;Initial Catalog=pabd;Integrated Security=True;";
+            string connectionString = kn.ConnectionString(); // Get the connection string from the koneksi class
             string query = @"
                SELECT 
                     s.salesman_id AS SalesmanID,
@@ -58,7 +60,8 @@ namespace DeliveryApp
 
             reportViewer1.LocalReport.DataSources.Clear();
             reportViewer1.LocalReport.DataSources.Add(rds);
-            reportViewer1.LocalReport.ReportPath = @"D:\KULIAH\SMT4 (ad matkul smt 6)\PABD\ucp1\ReportSalesman.rdlc"; // Ensure the report path is correct
+            string  reportPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ReportSalesman.rdlc"); // Use relative path to the report file
+            reportViewer1.LocalReport.ReportPath = reportPath; // Ensure the report path is correct
             reportViewer1.RefreshReport();
         }
 

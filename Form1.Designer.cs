@@ -61,6 +61,7 @@
             // 
             // groupBoxInput
             // 
+            this.groupBoxInput.BackColor = System.Drawing.Color.Transparent;
             this.groupBoxInput.Controls.Add(this.labelDeliveryDate);
             this.groupBoxInput.Controls.Add(this.dateTimePickerDeliveryDate);
             this.groupBoxInput.Controls.Add(this.labelSalesmanId);
@@ -84,7 +85,7 @@
             this.labelDeliveryDate.AutoSize = true;
             this.labelDeliveryDate.Location = new System.Drawing.Point(29, 42);
             this.labelDeliveryDate.Name = "labelDeliveryDate";
-            this.labelDeliveryDate.Size = new System.Drawing.Size(89, 16);
+            this.labelDeliveryDate.Size = new System.Drawing.Size(85, 17);
             this.labelDeliveryDate.TabIndex = 2;
             this.labelDeliveryDate.Text = "Delivery Date";
             // 
@@ -95,7 +96,7 @@
             this.dateTimePickerDeliveryDate.Location = new System.Drawing.Point(159, 42);
             this.dateTimePickerDeliveryDate.Name = "dateTimePickerDeliveryDate";
             this.dateTimePickerDeliveryDate.ShowUpDown = true;
-            this.dateTimePickerDeliveryDate.Size = new System.Drawing.Size(200, 22);
+            this.dateTimePickerDeliveryDate.Size = new System.Drawing.Size(200, 25);
             this.dateTimePickerDeliveryDate.TabIndex = 3;
             // 
             // labelSalesmanId
@@ -103,7 +104,7 @@
             this.labelSalesmanId.AutoSize = true;
             this.labelSalesmanId.Location = new System.Drawing.Point(29, 82);
             this.labelSalesmanId.Name = "labelSalesmanId";
-            this.labelSalesmanId.Size = new System.Drawing.Size(84, 16);
+            this.labelSalesmanId.Size = new System.Drawing.Size(79, 17);
             this.labelSalesmanId.TabIndex = 4;
             this.labelSalesmanId.Text = "Salesman ID";
             // 
@@ -113,7 +114,7 @@
             this.comboBoxSalesmanId.FormattingEnabled = true;
             this.comboBoxSalesmanId.Location = new System.Drawing.Point(159, 82);
             this.comboBoxSalesmanId.Name = "comboBoxSalesmanId";
-            this.comboBoxSalesmanId.Size = new System.Drawing.Size(200, 24);
+            this.comboBoxSalesmanId.Size = new System.Drawing.Size(200, 25);
             this.comboBoxSalesmanId.TabIndex = 5;
             // 
             // labelProductId
@@ -121,7 +122,7 @@
             this.labelProductId.AutoSize = true;
             this.labelProductId.Location = new System.Drawing.Point(29, 122);
             this.labelProductId.Name = "labelProductId";
-            this.labelProductId.Size = new System.Drawing.Size(69, 16);
+            this.labelProductId.Size = new System.Drawing.Size(69, 17);
             this.labelProductId.TabIndex = 6;
             this.labelProductId.Text = "Product ID";
             // 
@@ -131,7 +132,7 @@
             this.comboBoxProductId.FormattingEnabled = true;
             this.comboBoxProductId.Location = new System.Drawing.Point(159, 122);
             this.comboBoxProductId.Name = "comboBoxProductId";
-            this.comboBoxProductId.Size = new System.Drawing.Size(200, 24);
+            this.comboBoxProductId.Size = new System.Drawing.Size(200, 25);
             this.comboBoxProductId.TabIndex = 7;
             // 
             // labelQuantity
@@ -139,7 +140,7 @@
             this.labelQuantity.AutoSize = true;
             this.labelQuantity.Location = new System.Drawing.Point(29, 162);
             this.labelQuantity.Name = "labelQuantity";
-            this.labelQuantity.Size = new System.Drawing.Size(55, 16);
+            this.labelQuantity.Size = new System.Drawing.Size(56, 17);
             this.labelQuantity.TabIndex = 8;
             this.labelQuantity.Text = "Quantity";
             // 
@@ -152,7 +153,7 @@
             0,
             0});
             this.numericUpDownQuantity.Name = "numericUpDownQuantity";
-            this.numericUpDownQuantity.Size = new System.Drawing.Size(200, 22);
+            this.numericUpDownQuantity.Size = new System.Drawing.Size(200, 25);
             this.numericUpDownQuantity.TabIndex = 9;
             this.numericUpDownQuantity.Value = new decimal(new int[] {
             1,
@@ -202,6 +203,7 @@
             this.dataGridViewDelivery.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewDelivery.Location = new System.Drawing.Point(20, 389);
             this.dataGridViewDelivery.Name = "dataGridViewDelivery";
+            this.dataGridViewDelivery.ReadOnly = true;
             this.dataGridViewDelivery.RowHeadersWidth = 51;
             this.dataGridViewDelivery.RowTemplate.Height = 24;
             this.dataGridViewDelivery.Size = new System.Drawing.Size(760, 200);
@@ -217,25 +219,31 @@
             this.buttonRefresh.Size = new System.Drawing.Size(95, 30);
             this.buttonRefresh.TabIndex = 13;
             this.buttonRefresh.Text = "Refresh";
-            this.buttonRefresh.UseVisualStyleBackColor = true;
+            this.buttonRefresh.UseVisualStyleBackColor = false;
             this.buttonRefresh.Click += new System.EventHandler(this.ButtonRefresh_Click);
             // 
             // buttonOpenSalesmanForm
             // 
+            this.buttonOpenSalesmanForm.BackColor = System.Drawing.Color.SkyBlue;
+            this.buttonOpenSalesmanForm.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.buttonOpenSalesmanForm.Location = new System.Drawing.Point(618, 279);
             this.buttonOpenSalesmanForm.Name = "buttonOpenSalesmanForm";
             this.buttonOpenSalesmanForm.Size = new System.Drawing.Size(150, 30);
             this.buttonOpenSalesmanForm.TabIndex = 14;
             this.buttonOpenSalesmanForm.Text = "Manage Salesman";
+            this.buttonOpenSalesmanForm.UseVisualStyleBackColor = false;
             this.buttonOpenSalesmanForm.Click += new System.EventHandler(this.ButtonOpenSalesmanForm_Click);
             // 
             // buttonOpenProductForm
             // 
+            this.buttonOpenProductForm.BackColor = System.Drawing.Color.SkyBlue;
+            this.buttonOpenProductForm.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.buttonOpenProductForm.Location = new System.Drawing.Point(618, 233);
             this.buttonOpenProductForm.Name = "buttonOpenProductForm";
             this.buttonOpenProductForm.Size = new System.Drawing.Size(150, 30);
             this.buttonOpenProductForm.TabIndex = 15;
             this.buttonOpenProductForm.Text = "Manage Products";
+            this.buttonOpenProductForm.UseVisualStyleBackColor = false;
             this.buttonOpenProductForm.Click += new System.EventHandler(this.ButtonOpenProductForm_Click);
             // 
             // buttonExportReport
@@ -276,42 +284,53 @@
             // 
             // buttonOpenReportDelivery
             // 
+            this.buttonOpenReportDelivery.BackColor = System.Drawing.Color.SkyBlue;
+            this.buttonOpenReportDelivery.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.buttonOpenReportDelivery.Location = new System.Drawing.Point(618, 37);
             this.buttonOpenReportDelivery.Name = "buttonOpenReportDelivery";
             this.buttonOpenReportDelivery.Size = new System.Drawing.Size(150, 30);
             this.buttonOpenReportDelivery.TabIndex = 19;
             this.buttonOpenReportDelivery.Text = "Report Delivery";
+            this.buttonOpenReportDelivery.UseVisualStyleBackColor = false;
             this.buttonOpenReportDelivery.Click += new System.EventHandler(this.ButtonOpenReportDelivery_Click);
             // 
             // buttonOpenReportProducts
             // 
+            this.buttonOpenReportProducts.BackColor = System.Drawing.Color.SkyBlue;
+            this.buttonOpenReportProducts.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.buttonOpenReportProducts.Location = new System.Drawing.Point(618, 73);
             this.buttonOpenReportProducts.Name = "buttonOpenReportProducts";
             this.buttonOpenReportProducts.Size = new System.Drawing.Size(150, 30);
             this.buttonOpenReportProducts.TabIndex = 20;
             this.buttonOpenReportProducts.Text = "Report Products";
+            this.buttonOpenReportProducts.UseVisualStyleBackColor = false;
             this.buttonOpenReportProducts.Click += new System.EventHandler(this.ButtonOpenReportProducts_Click);
             // 
             // buttonOpenReportSalesman
             // 
+            this.buttonOpenReportSalesman.BackColor = System.Drawing.Color.SkyBlue;
+            this.buttonOpenReportSalesman.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.buttonOpenReportSalesman.Location = new System.Drawing.Point(618, 109);
             this.buttonOpenReportSalesman.Name = "buttonOpenReportSalesman";
             this.buttonOpenReportSalesman.Size = new System.Drawing.Size(150, 30);
             this.buttonOpenReportSalesman.TabIndex = 21;
             this.buttonOpenReportSalesman.Text = "Report Salesman";
+            this.buttonOpenReportSalesman.UseVisualStyleBackColor = false;
             this.buttonOpenReportSalesman.Click += new System.EventHandler(this.ButtonOpenReportSalesman_Click);
             // 
             // searchBox
             // 
+            this.searchBox.BackColor = System.Drawing.Color.White;
             this.searchBox.Location = new System.Drawing.Point(40, 348);
             this.searchBox.Name = "searchBox";
-            this.searchBox.Size = new System.Drawing.Size(245, 22);
+            this.searchBox.Size = new System.Drawing.Size(245, 25);
             this.searchBox.TabIndex = 22;
             this.searchBox.Text = "Search";
             this.searchBox.TextChanged += new System.EventHandler(this.searchBox_TextChanged);
             // 
             // pictureBox1
             // 
+            this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
             this.pictureBox1.Location = new System.Drawing.Point(15, 348);
             this.pictureBox1.Name = "pictureBox1";
@@ -321,7 +340,9 @@
             // 
             // Delivery
             // 
-            this.BackColor = System.Drawing.Color.LightSteelBlue;
+            this.BackColor = System.Drawing.Color.OliveDrab;
+            this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(800, 639);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.searchBox);
@@ -336,6 +357,7 @@
             this.Controls.Add(this.buttonOpenProductForm);
             this.Controls.Add(this.groupBoxInput);
             this.Controls.Add(this.dataGridViewDelivery);
+            this.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "Delivery";
             this.Text = "Delivery Management";
             this.groupBoxInput.ResumeLayout(false);

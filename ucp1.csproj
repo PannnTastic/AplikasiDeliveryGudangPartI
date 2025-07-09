@@ -209,6 +209,7 @@
     <Compile Include="FormReportSalesman.Designer.cs">
       <DependentUpon>FormReportSalesman.cs</DependentUpon>
     </Compile>
+    <Compile Include="koneksi.cs" />
     <Compile Include="ProductForm.cs">
       <SubType>Form</SubType>
     </Compile>

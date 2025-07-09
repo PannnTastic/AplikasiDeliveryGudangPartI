@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,6 +16,7 @@ namespace DeliveryApp
 {
     public partial class FormReportDelivery : Form
     {
+        koneksi kn = new koneksi(); // Instance of the koneksi class to get the connection string
         public FormReportDelivery()
         {
             InitializeComponent();
@@ -28,7 +30,7 @@ namespace DeliveryApp
 
         private void DeliveryReport()
         {
-            string connectionString = "Data Source=LAPTOP-EKC9LDBK\\PANNNTASTIC;Initial Catalog=pabd;Integrated Security=True;";
+            string connectionString = kn.ConnectionString(); // Get the connection string from the koneksi class
 
             string query = @"
                    SELECT 
@@ -64,8 +66,8 @@ namespace DeliveryApp
 
             reportViewer1.LocalReport.DataSources.Clear();
             reportViewer1.LocalReport.DataSources.Add(rds);
-
-            reportViewer1.LocalReport.ReportPath = @"D:\KULIAH\SMT4 (ad matkul smt 6)\PABD\ucp1\ReportDelivery.rdlc";
+            string reportPath =  Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ReportDelivery.rdlc"); // Use relative path to the report file
+            reportViewer1.LocalReport.ReportPath = reportPath;
             reportViewer1.RefreshReport();
 
 

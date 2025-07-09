@@ -12,7 +12,7 @@ namespace DeliveryApp
 {
     public partial class SalesmanForm : Form
     {
-        private readonly string connectionString = @"Server=LAPTOP-EKC9LDBK\PANNNTASTIC;Database=pabd;Trusted_Connection=True;";
+        koneksi kn = new koneksi();
         private readonly MemoryCache _cache = MemoryCache.Default;
         private readonly CacheItemPolicy _policy = new CacheItemPolicy
         {
@@ -37,7 +37,7 @@ namespace DeliveryApp
                 }
                 else
                 {
-                    using (SqlConnection connection = new SqlConnection(connectionString))
+                    using (SqlConnection connection = new SqlConnection(kn.ConnectionString()))
                     {
                         connection.Open();
                         SqlCommand command = new SqlCommand("spGetAllSalesman", connection);
@@ -73,7 +73,7 @@ namespace DeliveryApp
 
             try
             {
-                using (SqlConnection connection = new SqlConnection(connectionString))
+                using (SqlConnection connection = new SqlConnection(kn.ConnectionString()))
                 {
                     connection.Open();
 
@@ -136,7 +136,7 @@ namespace DeliveryApp
 
             try
             {
-                using (SqlConnection connection = new SqlConnection(connectionString))
+                using (SqlConnection connection = new SqlConnection(kn.ConnectionString()))
                 {
                     connection.Open();
 
@@ -191,7 +191,7 @@ namespace DeliveryApp
 
             try
             {
-                using (SqlConnection connection = new SqlConnection(connectionString))
+                using (SqlConnection connection = new SqlConnection(kn.ConnectionString()))
                 {
                     connection.Open();
 
@@ -259,7 +259,7 @@ namespace DeliveryApp
         {
             try
             {
-                using (SqlConnection connection = new SqlConnection(connectionString))
+                using (SqlConnection connection = new SqlConnection(kn.ConnectionString()))
                 {
                     connection.Open();
 
@@ -304,7 +304,7 @@ namespace DeliveryApp
         {
             try
             {
-                using (SqlConnection connection = new SqlConnection(connectionString))
+                using (SqlConnection connection = new SqlConnection(kn.ConnectionString()))
                 {
                     connection.Open();
 

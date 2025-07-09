@@ -39,6 +39,7 @@
             this.dataGridViewProducts.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewProducts.Location = new System.Drawing.Point(21, 63);
             this.dataGridViewProducts.Name = "dataGridViewProducts";
+            this.dataGridViewProducts.ReadOnly = true;
             this.dataGridViewProducts.RowHeadersWidth = 51;
             this.dataGridViewProducts.RowTemplate.Height = 24;
             this.dataGridViewProducts.Size = new System.Drawing.Size(553, 200);
@@ -49,96 +50,115 @@
             // 
             this.textBoxProductName.Location = new System.Drawing.Point(21, 283);
             this.textBoxProductName.Name = "textBoxProductName";
-            this.textBoxProductName.Size = new System.Drawing.Size(400, 22);
+            this.textBoxProductName.Size = new System.Drawing.Size(400, 25);
             this.textBoxProductName.TabIndex = 1;
             // 
             // labelProductName
             // 
             this.labelProductName.AutoSize = true;
+            this.labelProductName.BackColor = System.Drawing.Color.Transparent;
             this.labelProductName.Location = new System.Drawing.Point(21, 263);
             this.labelProductName.Name = "labelProductName";
-            this.labelProductName.Size = new System.Drawing.Size(96, 16);
+            this.labelProductName.Size = new System.Drawing.Size(95, 17);
             this.labelProductName.TabIndex = 2;
             this.labelProductName.Text = "Product Name:";
             // 
             // buttonAdd
             // 
+            this.buttonAdd.BackColor = System.Drawing.Color.Lime;
+            this.buttonAdd.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.buttonAdd.Font = new System.Drawing.Font("Segoe UI Symbol", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonAdd.Location = new System.Drawing.Point(21, 414);
             this.buttonAdd.Name = "buttonAdd";
             this.buttonAdd.Size = new System.Drawing.Size(100, 30);
             this.buttonAdd.TabIndex = 3;
             this.buttonAdd.Text = "Add";
-            this.buttonAdd.UseVisualStyleBackColor = true;
+            this.buttonAdd.UseVisualStyleBackColor = false;
             this.buttonAdd.Click += new System.EventHandler(this.ButtonAdd_Click);
             // 
             // buttonUpdate
             // 
+            this.buttonUpdate.BackColor = System.Drawing.Color.DeepSkyBlue;
+            this.buttonUpdate.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.buttonUpdate.Location = new System.Drawing.Point(141, 414);
             this.buttonUpdate.Name = "buttonUpdate";
             this.buttonUpdate.Size = new System.Drawing.Size(100, 30);
             this.buttonUpdate.TabIndex = 4;
             this.buttonUpdate.Text = "Update";
-            this.buttonUpdate.UseVisualStyleBackColor = true;
+            this.buttonUpdate.UseVisualStyleBackColor = false;
             this.buttonUpdate.Click += new System.EventHandler(this.ButtonUpdate_Click);
             // 
             // buttonDelete
             // 
+            this.buttonDelete.BackColor = System.Drawing.Color.Crimson;
+            this.buttonDelete.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.buttonDelete.Location = new System.Drawing.Point(261, 414);
             this.buttonDelete.Name = "buttonDelete";
             this.buttonDelete.Size = new System.Drawing.Size(100, 30);
             this.buttonDelete.TabIndex = 5;
             this.buttonDelete.Text = "Delete";
-            this.buttonDelete.UseVisualStyleBackColor = true;
+            this.buttonDelete.UseVisualStyleBackColor = false;
             this.buttonDelete.Click += new System.EventHandler(this.ButtonDelete_Click);
             // 
             // labelStockQuantity
             // 
             this.labelStockQuantity.AutoSize = true;
+            this.labelStockQuantity.BackColor = System.Drawing.Color.Transparent;
             this.labelStockQuantity.Location = new System.Drawing.Point(21, 313);
             this.labelStockQuantity.Name = "labelStockQuantity";
-            this.labelStockQuantity.Size = new System.Drawing.Size(95, 16);
+            this.labelStockQuantity.Size = new System.Drawing.Size(94, 17);
             this.labelStockQuantity.TabIndex = 6;
             this.labelStockQuantity.Text = "Stock Quantity:";
             // 
             // numericUpDownStockQuantity
             // 
+            this.numericUpDownStockQuantity.BackColor = System.Drawing.Color.WhiteSmoke;
             this.numericUpDownStockQuantity.Location = new System.Drawing.Point(21, 333);
             this.numericUpDownStockQuantity.Name = "numericUpDownStockQuantity";
-            this.numericUpDownStockQuantity.Size = new System.Drawing.Size(400, 22);
+            this.numericUpDownStockQuantity.Size = new System.Drawing.Size(400, 25);
             this.numericUpDownStockQuantity.TabIndex = 7;
             // 
             // buttonRefresh
             // 
+            this.buttonRefresh.BackColor = System.Drawing.Color.Yellow;
+            this.buttonRefresh.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.buttonRefresh.Location = new System.Drawing.Point(378, 414);
             this.buttonRefresh.Name = "buttonRefresh";
             this.buttonRefresh.Size = new System.Drawing.Size(98, 30);
             this.buttonRefresh.TabIndex = 9;
             this.buttonRefresh.Text = "Refresh";
-            this.buttonRefresh.UseVisualStyleBackColor = true;
+            this.buttonRefresh.UseVisualStyleBackColor = false;
             this.buttonRefresh.Click += new System.EventHandler(this.buttonRefresh_Click);
             // 
             // buttonExportCSV
             // 
+            this.buttonExportCSV.BackColor = System.Drawing.Color.MediumPurple;
+            this.buttonExportCSV.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.buttonExportCSV.ForeColor = System.Drawing.Color.Lime;
             this.buttonExportCSV.Location = new System.Drawing.Point(498, 414);
             this.buttonExportCSV.Name = "buttonExportCSV";
             this.buttonExportCSV.Size = new System.Drawing.Size(89, 30);
             this.buttonExportCSV.TabIndex = 10;
             this.buttonExportCSV.Text = "Export CSV";
-            this.buttonExportCSV.UseVisualStyleBackColor = true;
+            this.buttonExportCSV.UseVisualStyleBackColor = false;
             this.buttonExportCSV.Click += new System.EventHandler(this.buttonExportCsv_Click);
             // 
             // buttonExportPdf
             // 
+            this.buttonExportPdf.BackColor = System.Drawing.Color.MediumSlateBlue;
+            this.buttonExportPdf.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.buttonExportPdf.ForeColor = System.Drawing.Color.Red;
             this.buttonExportPdf.Location = new System.Drawing.Point(498, 378);
             this.buttonExportPdf.Name = "buttonExportPdf";
             this.buttonExportPdf.Size = new System.Drawing.Size(89, 30);
             this.buttonExportPdf.TabIndex = 11;
             this.buttonExportPdf.Text = "Export PDF";
-            this.buttonExportPdf.UseVisualStyleBackColor = true;
+            this.buttonExportPdf.UseVisualStyleBackColor = false;
             this.buttonExportPdf.Click += new System.EventHandler(this.buttonExportPdf_Click);
             // 
             // pictureBox1
             // 
+            this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
             this.pictureBox1.Location = new System.Drawing.Point(21, 23);
             this.pictureBox1.Name = "pictureBox1";
@@ -150,13 +170,15 @@
             // 
             this.searchBox.Location = new System.Drawing.Point(46, 23);
             this.searchBox.Name = "searchBox";
-            this.searchBox.Size = new System.Drawing.Size(245, 22);
+            this.searchBox.Size = new System.Drawing.Size(245, 25);
             this.searchBox.TabIndex = 24;
             this.searchBox.Text = "Search";
             this.searchBox.TextChanged += new System.EventHandler(this.searchBox_TextChanged);
             // 
             // ProductForm
             // 
+            this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(599, 456);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.searchBox);
@@ -171,6 +193,7 @@
             this.Controls.Add(this.labelProductName);
             this.Controls.Add(this.textBoxProductName);
             this.Controls.Add(this.dataGridViewProducts);
+            this.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "ProductForm";
             this.Text = "Manage Products";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ProductForm_FormClosing);
